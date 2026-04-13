@@ -1,0 +1,26 @@
+import { Client } from 'pg';
+
+export default async function globalTeardown() {
+  const dbName = process.env.DB_NAME || 'exam_platform_test';
+
+  const client = new Client({
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '5432', 10),
+    user: process.env.DB_USERNAME || 'postgres',
+    password: process.env.DB_PASSWORD || 'postgres',
+    database: 'postgres',
+  });
+
+  await client.connect();
+
+  await client.query(`
+    SELECT pg_terminate_backend(pg_stat_activity.pid)
+    FROM pg_stat_activity
+    WHERE pg_stat_activity.datname = '${dbName}'
+      AND pid <> pg_backend_pid()
+  `);
+
+  await client.query(`DROP DATABASE IF EXISTS "${dbName}"`);
+
+  await client.end();
+}

@@ -1,0 +1,18 @@
+{
+  "name": "CodeVerdict",
+  "short_name": "CodeVerdict",
+  "description": "Open-source coding exam platform with live ICPC-scored leaderboards, Monaco editor, and Judge0 code execution.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0a0a0f",
+  "theme_color": "#e42545",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["education", "productivity", "developer"],
+  "lang": "en"
+}

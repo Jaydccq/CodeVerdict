@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS custom properties ── */
+:root {
+  --font-heading: 'Figtree', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  /* Light mode */
+  --bg-primary:   #f8f6f6;
+  --bg-secondary: #f1eeee;
+  --bg-elevated:  #ffffff;
+  --border:       rgba(0, 0, 0, 0.08);
+  --text-primary:   #0f172a;
+  --text-secondary: #374151;
+  --text-muted:     #6b7280;
+  --brand-teal:     rgb(var(--color-accent));
+  --status-success: rgb(var(--color-accent));
+  --status-error:   rgb(var(--color-primary));
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+}
+
+.dark {
+  --bg-primary:   #0a0c10;
+  --bg-secondary: #111318;
+  --bg-elevated:  #1a1d24;
+  --border:       rgba(255, 255, 255, 0.06);
+  --text-primary:   #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted:     #64748b;
+}
+
+/* ── Global overrides (preserved from base.css) ── */
+
+/* Scrollbar - ultra thin */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Light mode scrollbar */
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::selection {
+  background: rgb(var(--color-primary) / 0.25);
+}
+
+/* Ensure full-height layout */
+html,
+body {
+  height: 100%;
+  font-family: 'Figtree', sans-serif;
+}
+
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

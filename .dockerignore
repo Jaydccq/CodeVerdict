@@ -1,0 +1,17 @@
+.git
+.gitignore
+*.md
+
+# Dependencies - reinstalled inside Docker
+**/node_modules
+
+# Build artifacts - rebuilt inside Docker
+client/dist
+server/dist
+
+# Environment - injected at runtime via docker-compose
+**/.env
+!**/.env.example
+
+# Dev tooling
+**/.vscode

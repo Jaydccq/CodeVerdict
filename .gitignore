@@ -1,0 +1,92 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# NestJS / TypeScript
+server/dist/
+server/*.js.map
+
+# Vite
+client/dist/
+client/.vite/
+
+# Environment files - never commit secrets
+.env
+.env.local
+.env.*.local
+.env.production
+server/.env
+client/.env
+client/.env.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+.nyc_output/
+
+# TypeScript cache
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+server/node_modules/.tmp/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code local session data
+.claude/
+
+# Docker
+.docker/
+
+# Uploads / generated files
+uploads/
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# Load test artifacts
+load-tests/.env.local
+load-tests/reports/*.html
+load-tests/reports/*.json
+
+# Internal planning docs
+phase-*.md
+agile-munching-sunset.md
+tranquil-percolating-ripple.md
+exam-problems.md
+pancake-recipe.md
