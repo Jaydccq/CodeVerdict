@@ -21,6 +21,38 @@ Fully open-source (AGPL-3.0) and white-label ready - customize branding (logo, a
 
 > **Open-source alternative to HackerRank, CodeSignal, HackerEarth, LeetCode, Codility, TestDome, CoderPad, CodeChef, and Codeforces.** CodeVerdict gives you full control - self-host on your own infrastructure, own your data, white-label everything, and pay nothing.
 
+## Preview
+
+<p align="center">
+  <img src="assets/preview.png" alt="CodeVerdict - Student Portal" width="100%" />
+</p>
+
+> **Student Portal** - Landing page once an exam is configured and live. Students see the contest details, rules, and timing at a glance. Hit **Enter Contest** to register via the API and jump straight into the coding environment.
+
+### Admin Panel - Exam Management
+
+<p align="center">
+  <img src="assets/create_exam_code_verdict.gif" alt="CodeVerdict - Create Exam" width="100%" />
+</p>
+
+> **Create & Manage Exams** - Admin dashboard showing all exams with status (Active/Ended), duration, and quick actions. Create new exams, assign problems, view the leaderboard, duplicate existing exams, or delete them - all from one place.
+
+### Admin Panel - Problem Bank
+
+<p align="center">
+  <img src="assets/create_problem_code_verdict.gif" alt="CodeVerdict - Problem Management" width="100%" />
+</p>
+
+> **Problem Bank** - Browse, search, and manage all problems across difficulty levels (Easy, Medium, Hard). Each problem shows time/memory limits, max score, and test case count. Add new problems or edit existing ones with the built-in editor.
+
+### Student Portal - Multi-Exam View
+
+<p align="center">
+  <img src="assets/multi_exam_user_preview_code_verdict.gif" alt="CodeVerdict - Multi Exam Student View" width="100%" />
+</p>
+
+> **Exam Selector** - When multiple exams are running simultaneously, students see all available contests on the landing page. Pick an exam, view its schedule and rules, and enter when the window is open.
+
 ---
 
 ## Features
