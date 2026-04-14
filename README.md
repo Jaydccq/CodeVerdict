@@ -21,6 +21,14 @@ Fully open-source (AGPL-3.0) and white-label ready - customize branding (logo, a
 
 > **Open-source alternative to HackerRank, CodeSignal, HackerEarth, LeetCode, Codility, TestDome, CoderPad, CodeChef, and Codeforces.** CodeVerdict gives you full control - self-host on your own infrastructure, own your data, white-label everything, and pay nothing.
 
+## Preview
+
+<p align="center">
+  <img src="assets/preview.png" alt="CodeVerdict - Student Portal" width="100%" />
+</p>
+
+> **Student Portal** - Landing page once an exam is configured and live. Students see the contest details, rules, and timing at a glance. Hit **Enter Contest** to register via the API and jump straight into the coding environment.
+
 ---
 
 ## Features
