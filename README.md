@@ -43,7 +43,7 @@ Fully open-source (AGPL-3.0) and white-label ready - customize branding (logo, a
   <img src="assets/create_problem_code_verdict.gif" alt="CodeVerdict - Problem Management" width="100%" />
 </p>
 
-> **Problem Bank** - Browse, search, and manage all 26+ problems across difficulty levels (Easy, Medium, Hard). Each problem shows time/memory limits, max score, and test case count. Add new problems or edit existing ones with the built-in editor.
+> **Problem Bank** - Browse, search, and manage all problems across difficulty levels (Easy, Medium, Hard). Each problem shows time/memory limits, max score, and test case count. Add new problems or edit existing ones with the built-in editor.
 
 ### Student Portal - Multi-Exam View
 
