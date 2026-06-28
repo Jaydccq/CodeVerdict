@@ -28,6 +28,6 @@ import { ExamsModule } from '../exams/exams.module';
     RunLogService,
     SlackService,
   ],
-  exports: [SubmissionsService, ScoringService, RunLogService],
+  exports: [SubmissionsService, ScoringService, RunLogService, Judge0Service],
 })
 export class SubmissionsModule {}

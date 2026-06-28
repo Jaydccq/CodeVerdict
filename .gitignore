@@ -68,6 +68,8 @@ desktop.ini
 
 # Claude Code local session data
 .claude/
+.playwright-mcp/
+.serena/
 
 # Docker
 .docker/

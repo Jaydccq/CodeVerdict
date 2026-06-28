@@ -125,7 +125,48 @@ graph LR
 git clone https://github.com/ATOAPaymentsLimited/CodeVerdict.git
 cd CodeVerdict
 cp .env.example .env         # set DB_PASSWORD, JWT_SECRET, ADMIN_SETUP_KEY
-docker compose up --build    # → http://localhost:3000
+npm run docker:up            # → http://localhost:3000
+```
+
+`npm run docker:up` starts only the practice app and PostgreSQL with the
+default `JUDGE0_URL` from `.env`.
+
+It also proactively removes stale `codeverdict-judge0-*` containers and the
+Judge0 profile volume left behind by earlier local Judge0 runs, so switching
+back from bundled Judge0 does not accumulate useless CodeVerdict containers.
+
+To start the bundled local Judge0 stack as well, use:
+
+```bash
+npm run docker:up:judge0
+```
+
+The raw `docker compose ...` commands are still available for debugging, but
+they are now a manual path. For normal local use, prefer the `npm run
+docker:*` wrappers so the repository can proactively clean stale CodeVerdict
+Judge0 profile resources when you switch back to the lightweight practice
+stack.
+
+Notes:
+
+- The upstream `judge0/judge0:1.13.1` image used here is published as a single
+  `linux/amd64` image, not a multi-arch manifest.
+- On Apple Silicon / `arm64` Docker Desktop hosts, that means Judge0 runs under
+  x86 emulation and may be unstable or resource-heavy.
+- On those machines, prefer an external Judge0 endpoint and leave the
+  `judge0-local` profile disabled unless you have confirmed the image works in
+  your environment.
+
+To stop the stack cleanly:
+
+```bash
+npm run docker:down
+```
+
+To remove only CodeVerdict's bundled Judge0 profile resources manually:
+
+```bash
+npm run docker:clean:judge0
 ```
 
 ### Local development
@@ -222,4 +263,3 @@ Contributions are welcome! 🎉 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup
 - **Universities and schools** - self-host freely, customize branding, no cost ever.
 - **Companies running it as a service** - you must open-source your modifications.
 - **Contributors** - your work stays open and can never be taken proprietary.
-

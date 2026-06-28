@@ -41,7 +41,11 @@
     "migration:run:prod": "typeorm migration:run -d dist/config/typeorm.config.js",
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/config/typeorm.config.ts",
     "migration:create": "typeorm-ts-node-commonjs migration:create",
-    "test:e2e": "jest --config jest-e2e.config.ts --runInBand --forceExit"
+    "test:e2e": "jest --config jest-e2e.config.ts --runInBand --forceExit",
+    "validate:problems": "node scripts/validate-problems.mjs",
+    "import:problem": "node scripts/import-problem.mjs",
+    "smoke:practice": "node scripts/smoke-practice.mjs",
+    "mock:judge0:practice": "node scripts/mock-judge0-practice.mjs"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

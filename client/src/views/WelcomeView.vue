@@ -339,7 +339,9 @@ const rules = [
                 </p>
               </div>
 
-              <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl max-h-[60vh] overflow-y-auto pr-1">
+              <div
+                class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl max-h-[60vh] overflow-y-auto pr-1"
+              >
                 <button
                   v-for="exam in examStore.activeExams"
                   :key="exam.id"

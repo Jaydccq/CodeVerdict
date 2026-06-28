@@ -1,0 +1,12 @@
+{
+  "name": "codeverdict",
+  "private": true,
+  "scripts": {
+    "docker:up": "bash scripts/docker-practice-up.sh",
+    "docker:up:judge0": "bash scripts/docker-practice-up-judge0.sh",
+    "docker:down": "bash scripts/docker-practice-down.sh",
+    "docker:clean:judge0": "bash scripts/docker-clean-judge0.sh",
+    "validate:problems": "npm --prefix server run validate:problems",
+    "verify:practice": "npm --prefix server run build && npm --prefix server run validate:problems && npm --prefix server run smoke:practice && npm --prefix client run build"
+  }
+}

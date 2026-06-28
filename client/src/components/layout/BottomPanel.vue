@@ -180,8 +180,7 @@ function verdictIcon(verdict: string) {
               <Transition name="slide">
                 <div
                   v-if="
-                    expandedErrors.has(r.index) &&
-                    (r.compileOutput || r.stderr)
+                    expandedErrors.has(r.index) && (r.compileOutput || r.stderr)
                   "
                   class="error-block"
                 >
@@ -408,7 +407,9 @@ function verdictIcon(verdict: string) {
             v-if="runSubmit.submission.verdict === 'accepted'"
             class="text-xs text-emerald-500/70 mb-4 flex items-center gap-1.5"
           >
-            <span class="material-symbols-outlined text-[14px]">celebration</span>
+            <span class="material-symbols-outlined text-[14px]"
+              >celebration</span
+            >
             All test cases passed. Well done!
           </p>
 

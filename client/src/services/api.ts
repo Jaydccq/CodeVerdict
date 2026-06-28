@@ -1,7 +1,17 @@
 import axios, { type AxiosError } from 'axios';
 import { useAuthStore } from '../stores/auth';
 import { useToastStore } from '../stores/toast';
-import type { RunResult, Submission, McqSubmitResult } from '../types';
+import type {
+  McqSubmitResult,
+  PracticeProblem,
+  PracticeProblemListItem,
+  PracticeRunCustomResult,
+  PracticeRunSampleResult,
+  PracticeSubmission,
+  PracticeSubmitResult,
+  RunResult,
+  Submission,
+} from '../types';
 
 const api = axios.create({
   baseURL: '/api',
@@ -91,6 +101,69 @@ export async function submitMcqSection(payload: {
     {
       answers,
     },
+  );
+  return data;
+}
+
+export async function listPracticeProblems(): Promise<
+  PracticeProblemListItem[]
+> {
+  const { data } = await api.get<PracticeProblemListItem[]>('/problems');
+  return data;
+}
+
+export async function getPracticeProblem(
+  slug: string,
+): Promise<PracticeProblem> {
+  const { data } = await api.get<PracticeProblem>(`/problems/${slug}`);
+  return data;
+}
+
+export async function runPracticeSample(payload: {
+  slug: string;
+  sourceCode: string;
+  language: string;
+}): Promise<PracticeRunSampleResult> {
+  const { slug, ...body } = payload;
+  const { data } = await api.post<PracticeRunSampleResult>(
+    `/problems/${slug}/run-sample`,
+    body,
+  );
+  return data;
+}
+
+export async function runPracticeCustom(payload: {
+  slug: string;
+  sourceCode: string;
+  language: string;
+  customInput: string;
+}): Promise<PracticeRunCustomResult> {
+  const { slug, ...body } = payload;
+  const { data } = await api.post<PracticeRunCustomResult>(
+    `/problems/${slug}/run-custom`,
+    body,
+  );
+  return data;
+}
+
+export async function submitPractice(payload: {
+  slug: string;
+  sourceCode: string;
+  language: string;
+}): Promise<PracticeSubmitResult> {
+  const { slug, ...body } = payload;
+  const { data } = await api.post<PracticeSubmitResult>(
+    `/problems/${slug}/submit`,
+    body,
+  );
+  return data;
+}
+
+export async function listPracticeSubmissions(
+  slug: string,
+): Promise<PracticeSubmission[]> {
+  const { data } = await api.get<PracticeSubmission[]>(
+    `/problems/${slug}/submissions`,
   );
   return data;
 }

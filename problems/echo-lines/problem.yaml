@@ -1,0 +1,22 @@
+slug: echo-lines
+title: Echo Lines
+difficulty: easy
+description: |
+  Read stdin and print it back exactly.
+inputFormat: |
+  Any text input.
+outputFormat: |
+  The same text.
+constraints: |
+  Input size is small.
+samples:
+  - input: |
+      hello
+    output: |
+      hello
+    explanation: |
+      Echo the line.
+supportedLanguages:
+  - python
+timeLimitMs: 1000
+memoryLimitKb: 65536

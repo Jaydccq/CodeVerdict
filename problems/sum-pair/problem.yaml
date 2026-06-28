@@ -1,0 +1,33 @@
+slug: sum-pair
+title: Sum Pair
+difficulty: easy
+description: |
+  Given an array of integers and a target value, print the zero-based indices of
+  the first pair whose values add up to the target.
+
+  You may assume exactly one valid answer exists.
+inputFormat: |
+  The first line contains an integer n.
+  The second line contains n space-separated integers.
+  The third line contains the target integer.
+outputFormat: |
+  Print two zero-based indices separated by a single space.
+constraints: |
+  2 <= n <= 10^5
+  -10^9 <= nums[i], target <= 10^9
+samples:
+  - input: |
+      4
+      2 7 11 15
+      9
+    output: |
+      0 1
+    explanation: |
+      nums[0] + nums[1] = 2 + 7 = 9.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

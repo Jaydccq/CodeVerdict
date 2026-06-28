@@ -11,6 +11,7 @@ import { SubmissionsModule } from './submissions/submissions.module';
 import { AutosaveModule } from './autosave/autosave.module';
 import { AdminModule } from './admin/admin.module';
 import databaseConfig from './config/database.config';
+import { PracticeModule } from './practice/practice.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import databaseConfig from './config/database.config';
     ExamsModule,
     ProblemsModule,
     SubmissionsModule,
+    PracticeModule,
     AutosaveModule,
     AdminModule,
   ],

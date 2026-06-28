@@ -76,12 +76,56 @@ function registerTheme() {
       'dropdown.background': '#141718',
     },
   });
+
+  monaco.editor.defineTheme('practice-light', {
+    base: 'vs',
+    inherit: true,
+    rules: [
+      {
+        token: 'keyword',
+        foreground: '1d4ed8',
+        fontStyle: 'bold',
+      },
+      { token: 'string', foreground: '0f766e' },
+      { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
+      { token: 'number', foreground: 'b45309' },
+      { token: 'type', foreground: '0369a1' },
+      { token: 'function', foreground: '6b4f1d' },
+      { token: 'variable', foreground: '111827' },
+      { token: 'operator', foreground: '111827' },
+    ],
+    colors: {
+      'editor.background': '#ffffff',
+      'editor.foreground': '#0f172a',
+      'editor.lineHighlightBackground': '#f8fafc',
+      'editor.selectionBackground': '#dbeafe',
+      'editorCursor.foreground': '#2563eb',
+      'editorLineNumber.foreground': '#2563eb',
+      'editorLineNumber.activeForeground': '#0f172a',
+      'editor.inactiveSelectionBackground': '#eff6ff',
+      'editorWidget.background': '#ffffff',
+      'editorWidget.border': '#dbe4f0',
+      'input.background': '#ffffff',
+      'input.border': '#dbe4f0',
+      'dropdown.background': '#ffffff',
+      'editorIndentGuide.background1': '#e5e7eb',
+      'editorIndentGuide.activeBackground1': '#cbd5e1',
+    },
+  });
+}
+
+interface MonacoOptions {
+  variant?: 'dark' | 'light';
+  fontSize?: number;
+  lineHeight?: number;
+  paddingTop?: number;
 }
 
 export function useMonaco(
   containerRef: Ref<HTMLElement | null>,
   language: Ref<string>,
   code: Ref<string>,
+  options: MonacoOptions = {},
 ) {
   const editor = shallowRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
@@ -101,12 +145,14 @@ export function useMonaco(
     registerTheme();
 
     lastSetValue = code.value;
+    const isLightVariant = options.variant === 'light';
     editor.value = markRaw(
       monaco.editor.create(containerRef.value, {
         value: code.value,
         language: language.value,
-        theme: 'exam-dark',
-        fontSize: 14,
+        theme: isLightVariant ? 'practice-light' : 'exam-dark',
+        fontSize: options.fontSize ?? 14,
+        lineHeight: options.lineHeight ?? 22,
         fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
         minimap: { enabled: false },
         scrollBeyondLastLine: false,
@@ -114,11 +160,18 @@ export function useMonaco(
         tabSize: 4,
         renderWhitespace: 'selection',
         bracketPairColorization: { enabled: true },
-        padding: { top: 12 },
+        padding: { top: options.paddingTop ?? 12 },
         lineNumbers: 'on',
         wordWrap: 'off',
         smoothScrolling: true,
         cursorBlinking: 'smooth',
+        roundedSelection: false,
+        glyphMargin: false,
+        folding: true,
+        scrollbar: {
+          verticalScrollbarSize: 10,
+          horizontalScrollbarSize: 10,
+        },
       }),
     );
 

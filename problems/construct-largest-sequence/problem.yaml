@@ -1,0 +1,64 @@
+slug: construct-largest-sequence
+title: Construct Largest Sequence
+difficulty: medium
+description: |
+  You are given an integer array `values` and a binary state string `state` of the same length.
+  You must build a sequence `s` with exactly `m` elements.
+
+  An index `i` is currently available if `state[i] = 1`.
+  In one operation:
+  1. choose any available index that has not been chosen before,
+  2. append `values[i]` to `s`,
+  3. update `state` simultaneously: every `0` that has a `1` immediately on its left becomes `1`.
+
+  Once an index becomes `1`, it stays unlocked forever. Choosing an index consumes that value, so the same index cannot be chosen again.
+
+  Your goal is to make the final sequence `s` lexicographically largest.
+  Sequence `a` is lexicographically larger than sequence `b` if at the first position where they differ, `a` has the larger value.
+inputFormat: |
+  The first line contains an integer n.
+  The second line contains n space-separated integers values[i].
+  The third line contains a binary string state of length n.
+  The fourth line contains an integer m.
+outputFormat: |
+  Print the m selected values in order, separated by single spaces.
+constraints: |
+  1 <= n <= 2 * 10^5
+  -10^9 <= values[i] <= 10^9
+  state.length = n
+  state contains only '0' and '1'
+  1 <= m <= n
+  There are at least m indices that are initially reachable or become reachable after repeated unlock operations.
+samples:
+  - input: |
+      4
+      10 5 7 6
+      0101
+      2
+    output: |
+      6 7
+    explanation: |
+      Initially, indices 1 and 3 are available, so you can choose 5 or 6.
+      Pick 6 first to maximize the first position.
+      After the first operation, index 2 becomes unlocked because state[1] = 1 and state[2] = 0.
+      Now the available unused values are 5 and 7, so pick 7.
+      The resulting sequence is [6, 7].
+  - input: |
+      5
+      4 9 1 8 7
+      10010
+      3
+    output: |
+      8 9 7
+    explanation: |
+      Step 1: available values are 4 and 8, so pick 8.
+      After unlocking, indices 1 and 4 become available, giving values 4, 9, and 7.
+      Step 2: pick 9.
+      Step 3: index 2 becomes available, but picking 7 still gives the lexicographically largest sequence.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

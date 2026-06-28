@@ -27,10 +27,13 @@ RUN addgroup -S app && adduser -S app -G app
 
 WORKDIR /app
 
-# Server runtime (compiled JS + pruned node_modules)
+# Server runtime for the lightweight practice app image.
+# Judge0 is intentionally not bundled here; Docker Compose decides whether an
+# external Judge0 endpoint or the optional judge0-local profile is used.
 COPY --from=builder --chown=app:app /build/server/dist         ./server/dist
 COPY --from=builder --chown=app:app /build/server/node_modules ./server/node_modules
 COPY --chown=app:app server/package.json                        ./server/package.json
+COPY --chown=app:app problems                                    ./problems
 
 # Client static files (served by NestJS)
 COPY --from=client-builder --chown=app:app /build/client/dist  ./server/public
@@ -39,8 +42,9 @@ USER app
 WORKDIR /app/server
 EXPOSE 3000
 
-# Verify the app is responding; 30s start period gives migrations time to run
+# Verify the practice API is responding; 30s start period gives startup and
+# schema/bootstrap work time to finish.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/api/health || exit 1
 
 CMD ["node", "dist/main"]

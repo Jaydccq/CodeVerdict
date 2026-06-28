@@ -10,6 +10,7 @@ import { SECRETS } from '../config/env';
 @Injectable()
 export class LeaderboardService {
   private readonly logger = new Logger(LeaderboardService.name);
+  private missingViewLogged = false;
 
   constructor(
     @InjectRepository(LeaderboardView)
@@ -45,6 +46,21 @@ export class LeaderboardService {
         'REFRESH MATERIALIZED VIEW CONCURRENTLY leaderboard_view',
       );
     } catch (err: unknown) {
+      const code =
+        typeof err === 'object' && err !== null && 'code' in err
+          ? String(err.code)
+          : undefined;
+
+      if (code === '42P01') {
+        if (!this.missingViewLogged) {
+          this.logger.warn(
+            'Skipping leaderboard refresh because leaderboard_view does not exist in practice mode.',
+          );
+          this.missingViewLogged = true;
+        }
+        return;
+      }
+
       const detail =
         err instanceof Error
           ? JSON.stringify(

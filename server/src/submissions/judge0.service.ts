@@ -135,6 +135,64 @@ export class Judge0Service {
     return allResults;
   }
 
+  async executeBatch(
+    code: string,
+    languageId: number,
+    inputs: string[],
+    timeLimitSec = 2,
+    memoryLimitKb = 262144,
+  ): Promise<JudgeResult[]> {
+    const submissions = inputs.map((input) => ({
+      source_code: this.toBase64(code),
+      language_id: languageId,
+      stdin: this.toBase64(input),
+      cpu_time_limit: timeLimitSec,
+      memory_limit: memoryLimitKb,
+    }));
+
+    const batchSize = SECRETS.MAX_SUBMISSION_BATCH_SIZE;
+    const chunks: (typeof submissions)[] = [];
+    for (let i = 0; i < submissions.length; i += batchSize) {
+      chunks.push(submissions.slice(i, i + batchSize));
+    }
+
+    const chunkResults = await Promise.all(
+      chunks.map((chunk) =>
+        this.submitChunk(
+          chunk,
+          languageId,
+          inputs.length,
+          timeLimitSec,
+          memoryLimitKb,
+        ),
+      ),
+    );
+
+    return chunkResults.flatMap((results, chunkIndex) =>
+      results.map((result, index) => ({
+        ...result,
+        index: chunkIndex * batchSize + index,
+      })),
+    );
+  }
+
+  async execute(
+    code: string,
+    languageId: number,
+    input: string,
+    timeLimitSec = 2,
+    memoryLimitKb = 262144,
+  ): Promise<JudgeResult> {
+    const [result] = await this.executeBatch(
+      code,
+      languageId,
+      [input],
+      timeLimitSec,
+      memoryLimitKb,
+    );
+    return result;
+  }
+
   private async submitChunk(
     submissions: Record<string, unknown>[],
     languageId: number,

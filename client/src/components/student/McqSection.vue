@@ -84,8 +84,6 @@ async function handleSubmit() {
     isSubmitting.value = false;
   }
 }
-
-
 </script>
 
 <template>

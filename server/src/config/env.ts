@@ -23,25 +23,29 @@ export const SECRETS = Object.freeze({
   // Application
   NODE_ENV: optional('NODE_ENV', 'dev'),
   PORT: parseInt(optional('PORT', '3000'), 10),
+  HOST: optional('HOST', '127.0.0.1'),
   APP_NAME: optional('APP_NAME', 'CodeVerdict'),
 
   // Auth
-  JWT_SECRET: required('JWT_SECRET'),
+  JWT_SECRET: optional('JWT_SECRET', 'local-dev-secret'),
   JWT_EXPIRES_IN: optional('JWT_EXPIRES_IN', '1d'),
 
   // Judge0
-  JUDGE0_URL: optional('JUDGE0_URL', 'https://judge0-ce.p.rapidapi.com'),
-  RAPIDAPI_KEY: required('RAPIDAPI_KEY'),
+  JUDGE0_URL: optional('JUDGE0_URL', 'http://localhost:2358'),
+  RAPIDAPI_KEY: process.env.RAPIDAPI_KEY,
   RAPIDAPI_HOST: optional('RAPIDAPI_HOST', 'judge0-ce.p.rapidapi.com'),
 
   // Admin
-  ADMIN_SETUP_KEY: required('ADMIN_SETUP_KEY'),
+  ADMIN_SETUP_KEY: optional('ADMIN_SETUP_KEY', 'local-admin-setup-key'),
 
   // Database pool
   DB_POOL_SIZE: parseInt(optional('DB_POOL_SIZE', '10'), 10),
 
   // CORS
-  CORS_ORIGIN: optional('CORS_ORIGIN', 'http://localhost:5173'),
+  CORS_ORIGIN: optional(
+    'CORS_ORIGIN',
+    'http://127.0.0.1:5173,http://localhost:5173',
+  ),
 
   // Leaderboard
   LEADERBOARD_CRON: optional('LEADERBOARD_CRON', '0 */5 * * * *'),

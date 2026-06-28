@@ -144,3 +144,90 @@ export interface LanguageConfig {
   monacoLang: string;
   boilerplate: string;
 }
+
+export interface PracticeLanguage {
+  key: string;
+  label: string;
+  languageId: number;
+  monacoLanguage: string;
+}
+
+export interface PracticeSample {
+  input: string;
+  output: string;
+  explanation?: string;
+}
+
+export interface PracticeProblemListItem {
+  slug: string;
+  title: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  summary: string;
+  supportedLanguages: PracticeLanguage[];
+}
+
+export interface PracticeProblem {
+  slug: string;
+  title: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  description: string;
+  inputFormat: string;
+  outputFormat: string;
+  constraints: string;
+  samples: PracticeSample[];
+  supportedLanguages: PracticeLanguage[];
+  starterCode: Record<string, string>;
+  timeLimitMs: number;
+  memoryLimitKb: number;
+}
+
+export interface PracticeRunSampleItem {
+  index: number;
+  passed: boolean;
+  status: string;
+  input: string;
+  expectedOutput: string;
+  actualOutput: string | null;
+  stderr: string | null;
+  compileOutput: string | null;
+  time: number | null;
+  memory: number | null;
+}
+
+export interface PracticeRunSampleResult {
+  results: PracticeRunSampleItem[];
+}
+
+export interface PracticeRunCustomResult {
+  status: string;
+  stdout: string | null;
+  stderr: string | null;
+  compileOutput: string | null;
+  time: number | null;
+  memory: number | null;
+}
+
+export interface PracticeSubmitResult {
+  id: number;
+  verdict: string;
+  passedCount: number;
+  totalCount: number;
+  failureType: string | null;
+  visibleFailure: PracticeRunSampleItem | null;
+  hiddenFailure: {
+    message: string;
+    failureType: string | null;
+  } | null;
+  createdAt: string;
+}
+
+export interface PracticeSubmission {
+  id: number;
+  problemSlug: string;
+  language: string;
+  verdict: string;
+  passedCount: number;
+  totalCount: number;
+  safeDetailsJson: Record<string, unknown> | null;
+  createdAt: string;
+}

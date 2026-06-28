@@ -10,6 +10,7 @@ services:
       - app-db-data:/var/lib/postgresql/data
     networks:
       - app-network
+    mem_limit: 256m
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-exam_platform}"]
@@ -22,10 +23,11 @@ services:
   app:
     build: .
     ports:
-      - "${PORT:-3000}:3000"
+      - "127.0.0.1:${PORT:-3000}:3000"
     environment:
       NODE_ENV:        production
       PORT:            3000
+      HOST:            0.0.0.0
       DB_HOST:         app-db
       DB_PORT:         5432
       DB_USERNAME:     ${DB_USERNAME:-postgres}
@@ -33,7 +35,7 @@ services:
       DB_NAME:         ${DB_NAME:-exam_platform}
       JWT_SECRET:      ${JWT_SECRET:?JWT_SECRET is required}
       JWT_EXPIRES_IN:  ${JWT_EXPIRES_IN:-21600}
-      JUDGE0_URL:      ${JUDGE0_URL:-http://judge0-server:2358}
+      JUDGE0_URL:      ${JUDGE0_URL:-http://host.docker.internal:2358}
       ADMIN_SETUP_KEY: ${ADMIN_SETUP_KEY:?ADMIN_SETUP_KEY is required}
       CORS_ORIGIN:     ${CORS_ORIGIN:-}
     depends_on:
@@ -42,11 +44,14 @@ services:
     networks:
       - app-network
       - judge0-network
+    mem_limit: 512m
     restart: unless-stopped
 
   # ── Judge0 ────────────────────────────────────────────────────────────────────
   judge0-server:
     image: judge0/judge0:1.13.1
+    platform: linux/amd64
+    profiles: ["judge0-local"]
     privileged: true
     env_file: judge0/judge0.conf
     depends_on:
@@ -54,10 +59,13 @@ services:
       - judge0-redis
     networks:
       - judge0-network
+    mem_limit: 512m
     restart: unless-stopped
 
   judge0-worker:
     image: judge0/judge0:1.13.1
+    platform: linux/amd64
+    profiles: ["judge0-local"]
     command: ["./scripts/workers"]
     privileged: true
     env_file: judge0/judge0.conf
@@ -66,11 +74,13 @@ services:
       - judge0-redis
     networks:
       - judge0-network
+    mem_limit: 768m
     restart: unless-stopped
 
   # postgres:16 - Judge0 1.13.1 is not tested against postgres 17
   judge0-db:
     image: postgres:16-alpine
+    profiles: ["judge0-local"]
     environment:
       POSTGRES_DB:       judge0
       POSTGRES_USER:     judge0
@@ -80,12 +90,15 @@ services:
       - judge0-db-data:/var/lib/postgresql/data
     networks:
       - judge0-network
+    mem_limit: 256m
     restart: unless-stopped
 
   judge0-redis:
     image: redis:7.2.4-alpine
+    profiles: ["judge0-local"]
     networks:
       - judge0-network
+    mem_limit: 128m
     restart: unless-stopped
 
 networks:

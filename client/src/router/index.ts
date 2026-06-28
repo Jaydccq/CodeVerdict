@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import StudentView from '../views/StudentView.vue';
-import WelcomeView from '../views/WelcomeView.vue';
+import PracticeProblemListView from '../views/PracticeProblemListView.vue';
+import PracticeWorkspaceView from '../views/PracticeWorkspaceView.vue';
 import { useAuthStore } from '../stores/auth';
 
 declare module 'vue-router' {
@@ -15,15 +15,20 @@ const router = createRouter({
     // ── Welcome / Landing ──────────────────────────────────────────────────────
     {
       path: '/',
-      name: 'welcome',
-      component: WelcomeView,
+      name: 'practice-home',
+      component: PracticeProblemListView,
+    },
+    {
+      path: '/problems/:slug',
+      name: 'practice-problem',
+      component: PracticeWorkspaceView,
     },
 
     // ── Student Workspace ────────────────────────────────────────────────────
     {
       path: '/exam/:id/workspace',
       name: 'workspace',
-      component: StudentView,
+      redirect: { name: 'practice-home' },
     },
 
     // ── Admin Login (standalone, no layout) ────────────────────────────────────
@@ -206,7 +211,7 @@ router.beforeEach((to) => {
     return { name: 'admin-login' };
   }
   if (authStore.user.role !== 'ADMIN') {
-    return { name: 'welcome' };
+    return { name: 'practice-home' };
   }
 });
 

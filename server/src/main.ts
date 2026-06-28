@@ -7,6 +7,13 @@ import helmet from 'helmet';
 import * as express from 'express';
 import { SECRETS } from './config/env';
 
+function parseCorsOrigins(raw: string): string[] {
+  return raw
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter((origin) => origin.length > 0);
+}
+
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -67,8 +74,9 @@ async function bootstrap() {
     });
   }
 
+  const corsOrigins = parseCorsOrigins(SECRETS.CORS_ORIGIN);
   app.enableCors({
-    origin: SECRETS.CORS_ORIGIN,
+    origin: corsOrigins.length === 0 ? false : corsOrigins,
     credentials: true,
   });
 
@@ -89,7 +97,7 @@ async function bootstrap() {
     );
   }
 
-  await app.listen(SECRETS.PORT);
-  logger.log(`Application running on port ${SECRETS.PORT}`);
+  await app.listen(SECRETS.PORT, SECRETS.HOST);
+  logger.log(`Application running on http://${SECRETS.HOST}:${SECRETS.PORT}`);
 }
 void bootstrap();
