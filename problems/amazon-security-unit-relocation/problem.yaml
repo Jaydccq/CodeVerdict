@@ -1,0 +1,38 @@
+slug: amazon-security-unit-relocation
+source: amazon-oa
+title: Security Unit Relocation Max Protected Population
+difficulty: medium
+description: |
+  Place k security units at existing city positions. A unit protects cities within distance radius. Maximize the sum of protected population counted per chosen unit in this adaptation.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: n k radius. Line 2: city positions. Line 3: city populations.
+outputFormat: |
+  Print the maximum protected population score.
+constraints: |
+  1 <= n <= 2000. 1 <= k <= n.
+samples:
+  - input: |
+      4 1 2
+      1 3 6 10
+      5 10 20 1
+    output: |
+      20
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      5 2 1
+      1 2 4 7 8
+      3 4 5 6 7
+    output: |
+      26
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

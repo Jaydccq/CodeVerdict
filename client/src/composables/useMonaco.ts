@@ -119,6 +119,7 @@ interface MonacoOptions {
   fontSize?: number;
   lineHeight?: number;
   paddingTop?: number;
+  readOnly?: Ref<boolean>;
 }
 
 export function useMonaco(
@@ -172,6 +173,7 @@ export function useMonaco(
           verticalScrollbarSize: 10,
           horizontalScrollbarSize: 10,
         },
+        readOnly: options.readOnly?.value ?? false,
       }),
     );
 
@@ -213,6 +215,14 @@ export function useMonaco(
       }
     });
   });
+
+  if (options.readOnly) {
+    watch(options.readOnly, (readOnly) => {
+      if (editor.value) {
+        editor.value.updateOptions({ readOnly });
+      }
+    });
+  }
 
   onBeforeUnmount(() => {
     contentDisposable?.dispose();

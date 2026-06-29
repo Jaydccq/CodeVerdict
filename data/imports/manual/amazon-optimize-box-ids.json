@@ -1,0 +1,74 @@
+{
+  "slug": "amazon-optimize-box-ids",
+  "source": "amazon-oa",
+  "title": "Optimize Box IDs",
+  "difficulty": "medium",
+  "description": "An Amazon warehouse stores boxes in a row. The row is represented by a digit string `boxIds`, where `boxIds[i]` is the ID of the i-th box.\n\nYou may repeat the following operation any number of times:\n\n1. Choose one position `i` and remove `boxIds[i]` from the string.\n2. Increase that digit by one, capped at `9`.\n3. Insert the updated digit at any position in the string, including the beginning, the end, or between any two adjacent digits.\n\nReturn the lexicographically smallest string that can be produced after any number of operations.\n\nThis repository version is a normalized Amazon OA practice adaptation reconstructed from the user-provided prompt screenshots. The fixtures are deterministic practice tests, not official hidden tests.",
+  "inputFormat": "Line 1: string `boxIds` consisting only of digits.",
+  "outputFormat": "Print the lexicographically smallest string reachable by the allowed operations.",
+  "constraints": "1 <= |boxIds| <= 200000.\n`boxIds` contains only digits from `0` to `9`.\nLeading zeroes are allowed in both the input and the answer.",
+  "samples": [
+    {
+      "input": "26547\n",
+      "output": "24677\n",
+      "explanation": "Move `5` after incrementing it to `6`, then move `6` after incrementing it to `7`. The final arrangement `24677` is lexicographically minimal."
+    },
+    {
+      "input": "001\n",
+      "output": "001\n",
+      "explanation": "The input is already optimal, so no operation is needed."
+    },
+    {
+      "input": "987654\n",
+      "output": "467899\n",
+      "explanation": "Every digit before the suffix minimum can be moved, incremented, and reinserted to create a smaller prefix."
+    }
+  ],
+  "supportedLanguages": [
+    "python",
+    "javascript",
+    "cpp",
+    "java"
+  ],
+  "timeLimitMs": 2000,
+  "memoryLimitKb": 262144,
+  "editorial": "# Optimize Box IDs\n\nA digit should stay in place only if no smaller digit appears to its right. Otherwise, keeping it where it is would force a larger digit to appear too early in the final string.\n\nProcess the string from right to left and record the minimum suffix digit after each position.\n\n- If `boxIds[i]` is greater than the minimum digit that appears later, remove it, increment it by one (capped at `9`), and place it into a multiset of deferred digits.\n- Otherwise keep it in the main sequence.\n\nBecause digits are only `0` through `9`, the deferred multiset can be stored as a size-10 frequency array. To build the answer, merge:\n\n- the kept digits in their original order\n- the deferred digits in sorted order\n\nBefore emitting a kept digit `d`, flush every deferred digit smaller than `d`. After all kept digits are emitted, append the remaining deferred digits in ascending order.\n\nThis yields the lexicographically smallest reachable string in `O(n)` time and `O(1)` extra space beyond the output buffer.",
+  "starterCode": {
+    "python": "import sys\n\n# Read from standard input and write the answer to standard output.\ndef solve(data: str) -> str:\n    return \"\"\n\nif __name__ == \"__main__\":\n    print(solve(sys.stdin.read()))\n",
+    "javascript": "const fs = require('fs');\n\nfunction solve(input) {\n  return '';\n}\n\nprocess.stdout.write(String(solve(fs.readFileSync(0, 'utf8'))));\n",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    return 0;\n}\n",
+    "java": "import java.io.*;\nimport java.util.*;\n\nclass Main {\n    public static void main(String[] args) throws Exception {\n        new BufferedReader(new InputStreamReader(System.in));\n    }\n}\n"
+  },
+  "visibleTests": [
+    {
+      "input": "26547\n",
+      "output": "24677\n"
+    },
+    {
+      "input": "001\n",
+      "output": "001\n"
+    },
+    {
+      "input": "987654\n",
+      "output": "467899\n"
+    }
+  ],
+  "hiddenTests": [
+    {
+      "input": "909\n",
+      "output": "099\n"
+    },
+    {
+      "input": "1000\n",
+      "output": "0002\n"
+    },
+    {
+      "input": "5550\n",
+      "output": "0666\n"
+    },
+    {
+      "input": "1291\n",
+      "output": "1139\n"
+    }
+  ]
+}

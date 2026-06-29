@@ -158,8 +158,28 @@ export interface PracticeSample {
   explanation?: string;
 }
 
+export interface PracticeDebugWorkspaceFile {
+  path: string;
+  content: string;
+  editable: boolean;
+}
+
+export interface PracticeDebugWorkspace {
+  stack: 'node';
+  runnerProfile: string;
+  entryFiles: string[];
+  editablePaths: string[];
+  files: PracticeDebugWorkspaceFile[];
+}
+
+export interface PracticeDebugWorkspaceDraft {
+  editedFiles: Record<string, string>;
+  updatedAt: string | null;
+}
+
 export interface PracticeProblemListItem {
   slug: string;
+  questionType: 'algorithm' | 'debug-workspace';
   title: string;
   difficulty: 'easy' | 'medium' | 'hard';
   summary: string;
@@ -167,18 +187,22 @@ export interface PracticeProblemListItem {
 }
 
 export interface PracticeProblem {
+  questionType: 'algorithm' | 'debug-workspace';
   slug: string;
+  source?: string;
   title: string;
   difficulty: 'easy' | 'medium' | 'hard';
   description: string;
   inputFormat: string;
   outputFormat: string;
   constraints: string;
+  editorial?: string;
   samples: PracticeSample[];
   supportedLanguages: PracticeLanguage[];
   starterCode: Record<string, string>;
   timeLimitMs: number;
   memoryLimitKb: number;
+  debugWorkspace?: PracticeDebugWorkspace;
 }
 
 export interface PracticeRunSampleItem {

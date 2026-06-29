@@ -141,6 +141,15 @@ To start the bundled local Judge0 stack as well, use:
 npm run docker:up:judge0
 ```
 
+On Apple Silicon / `arm64`, that wrapper now refuses by default because the
+upstream `judge0/judge0:1.13.1` image is already known in this repository to be
+an unstable x86-only path under Docker Desktop emulation. Override only if you
+explicitly want to retry it:
+
+```bash
+CODEVERDICT_ALLOW_UNSUPPORTED_JUDGE0_LOCAL=1 npm run docker:up:judge0
+```
+
 The raw `docker compose ...` commands are still available for debugging, but
 they are now a manual path. For normal local use, prefer the `npm run
 docker:*` wrappers so the repository can proactively clean stale CodeVerdict
@@ -156,6 +165,9 @@ Notes:
 - On those machines, prefer an external Judge0 endpoint and leave the
   `judge0-local` profile disabled unless you have confirmed the image works in
   your environment.
+- The repository wrapper now enforces that default by refusing
+  `npm run docker:up:judge0` on `arm64` unless
+  `CODEVERDICT_ALLOW_UNSUPPORTED_JUDGE0_LOCAL=1` is set.
 
 To stop the stack cleanly:
 

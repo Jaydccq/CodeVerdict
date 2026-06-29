@@ -1,0 +1,56 @@
+slug: amazon-optimize-box-ids
+source: amazon-oa
+title: Optimize Box IDs
+difficulty: medium
+description: |
+  An Amazon warehouse stores boxes in a row. The row is represented by a digit string `boxIds`, where `boxIds[i]` is the ID of the i-th box.
+  
+  You may repeat the following operation any number of times:
+  
+  1. Choose one position `i` and remove `boxIds[i]` from the string.
+  2. Increase that digit by one, capped at `9`.
+  3. Insert the updated digit at any position in the string, including the beginning, the end, or between any two adjacent digits.
+  
+  Return the lexicographically smallest string that can be produced after any number of operations.
+  
+  This repository version is a normalized Amazon OA practice adaptation reconstructed from the user-provided prompt screenshots. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: string `boxIds` consisting only of digits.
+outputFormat: |
+  Print the lexicographically smallest string reachable by the allowed operations.
+constraints: |
+  1 <= |boxIds| <= 200000.
+  `boxIds` contains only digits from `0` to `9`.
+  Leading zeroes are allowed in both the input and the answer.
+samples:
+  - input: |
+      26547
+      
+    output: |
+      24677
+      
+    explanation: |
+      Move `5` after incrementing it to `6`, then move `6` after incrementing it to `7`. The final arrangement `24677` is lexicographically minimal.
+  - input: |
+      001
+      
+    output: |
+      001
+      
+    explanation: |
+      The input is already optimal, so no operation is needed.
+  - input: |
+      987654
+      
+    output: |
+      467899
+      
+    explanation: |
+      Every digit before the suffix minimum can be moved, incremented, and reinserted to create a smaller prefix.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

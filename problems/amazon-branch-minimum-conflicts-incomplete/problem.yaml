@@ -1,0 +1,36 @@
+slug: amazon-branch-minimum-conflicts-incomplete
+source: amazon-oa
+title: Merging Branch Minimum Commit Conflict Count
+difficulty: medium
+description: |
+  Two branches are represented by commit strings. Commits kept in the same relative order can merge cleanly. Compute the minimum number of commits that must be treated as conflicts.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: primary commit string. Line 2: secondary commit string.
+outputFormat: |
+  Print the minimum conflict count.
+constraints: |
+  1 <= length <= 1000.
+samples:
+  - input: |
+      abcde
+      ace
+    output: |
+      2
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      amazon
+      azamon
+    output: |
+      4
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

@@ -1,0 +1,16 @@
+{
+  "stack": "node",
+  "runnerProfile": "node-script",
+  "entryFiles": [
+    "README.md",
+    "src/api/ticketApi.js",
+    "src/repositories/ticketRepository.js",
+    "tests/run-visible.js"
+  ],
+  "editablePaths": [
+    "src/api/ticketApi.js",
+    "src/repositories/ticketRepository.js"
+  ],
+  "visibleTestScript": "tests/run-visible.js",
+  "submitTestScript": "tests/run-hidden.js"
+}

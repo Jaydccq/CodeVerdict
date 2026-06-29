@@ -1,0 +1,39 @@
+slug: amazon-grid-min-distance-after-flip
+source: amazon-oa
+title: Grid Minimum Distance After Flipping One Zero
+difficulty: medium
+description: |
+  Given a binary grid, flip at most one 0 to 1. Minimize the maximum distance from any 1-cell to its nearest 1-cell in the resulting grid.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: r c. Next r lines: binary grid rows.
+outputFormat: |
+  Print the minimized maximum nearest-one distance.
+constraints: |
+  1 <= r,c <= 30 for this practice adaptation.
+samples:
+  - input: |
+      2 2
+      10
+      00
+    output: |
+      0
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      3 3
+      100
+      000
+      001
+    output: |
+      0
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

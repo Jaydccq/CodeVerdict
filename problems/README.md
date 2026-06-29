@@ -20,6 +20,20 @@ problems/
       hidden/
         001.in
         001.out
+    editorial.md
+```
+
+`debug-workspace` problems use this structure instead:
+
+```text
+problems/
+  <slug>/
+    problem.yaml
+    editorial.md
+    workspace/
+      manifest.json
+      seed/
+        ...
 ```
 
 ## `problem.yaml`
@@ -37,6 +51,11 @@ Required fields:
 - `supportedLanguages`
 - `timeLimitMs`
 - `memoryLimitKb`
+
+Optional fields:
+
+- `source`
+- `questionType` (`algorithm` by default, `debug-workspace` when present)
 
 Example:
 
@@ -70,6 +89,22 @@ timeLimitMs: 2000
 memoryLimitKb: 262144
 ```
 
+`editorial.md` is optional for legacy/local sample problems and required for
+imported Amazon OA problems marked with `source: amazon-oa`. It stores the
+answer and explanation shown in the practice workspace.
+
+For `debug-workspace` problems, `workspace/manifest.json` must declare:
+
+- `stack`
+- `entryFiles`
+- `editablePaths`
+- `visibleTestScript`
+- `submitTestScript`
+
+Only files referenced by `entryFiles` or `editablePaths` are exposed back to
+the client workspace. Hidden test scripts may live inside `workspace/seed/`,
+but they must not be listed as visible workspace files.
+
 ## Validation
 
 Run:
@@ -87,6 +122,9 @@ The validator checks:
 - visible and hidden tests both exist
 - every `.in` file has a matching `.out` file
 - every declared sample matches a visible test pair
+- Amazon OA imports have non-empty `editorial.md`
+- Amazon OA judge-facing content does not contain unresolved source placeholders
+- `debug-workspace` manifests point to valid seed files and safe relative paths
 
 ## Importing from JSON
 
@@ -102,5 +140,6 @@ Expected JSON fields:
 - `starterCode`
 - `visibleTests`
 - `hiddenTests`
+- `editorial` for `source: "amazon-oa"` imports
 
 The import script writes a normalized problem directory under `problems/`.

@@ -7,6 +7,12 @@ function normalizeFixtureText(value) {
   return String(value).replace(/\r\n/g, '\n').trimEnd();
 }
 
+function hasUnresolvedPlaceholder(value) {
+  return ['未提供', '未公开', '不伪造官方答案'].some((placeholder) =>
+    String(value).includes(placeholder),
+  );
+}
+
 function countIndent(raw) {
   let indent = 0;
   while (indent < raw.length && raw[indent] === ' ') indent += 1;
@@ -180,6 +186,15 @@ function normalizePositiveInt(value, field, errors) {
   return value;
 }
 
+function isSafeRelativePath(value) {
+  return (
+    typeof value === 'string' &&
+    value.length > 0 &&
+    !path.isAbsolute(value) &&
+    !value.split(/[\\/]/).includes('..')
+  );
+}
+
 function readTests(problemDir, visibility, errors) {
   const testsDir = path.join(problemDir, 'tests', visibility);
   if (!fs.existsSync(testsDir)) {
@@ -225,6 +240,10 @@ function validateProblem(problemDir) {
   }
 
   const parsed = parseProblemYaml(fs.readFileSync(metadataFile, 'utf8'));
+  const isAmazonOaProblem = parsed.source === 'amazon-oa';
+  const isDebugWorkspace = parsed.questionType === 'debug-workspace';
+  const isAmazonDebugProblem =
+    isAmazonOaProblem && slug.startsWith('amazon-debug-');
   if (parsed.slug !== slug) errors.push('slug must match the directory name');
 
   normalizeString(parsed.title, 'title', errors);
@@ -249,7 +268,9 @@ function validateProblem(problemDir) {
     }
   }
 
-  if (!Array.isArray(parsed.samples) || parsed.samples.length === 0) {
+  if (!Array.isArray(parsed.samples)) {
+    errors.push('samples must be an array');
+  } else if (!isDebugWorkspace && parsed.samples.length === 0) {
     errors.push('samples must contain at least one example');
   } else {
     for (const sample of parsed.samples) {
@@ -262,12 +283,28 @@ function validateProblem(problemDir) {
     }
   }
 
-  const visibleTests = readTests(problemDir, 'visible', errors);
-  const hiddenTests = readTests(problemDir, 'hidden', errors);
-  if (visibleTests.length === 0) errors.push('at least one visible test is required');
-  if (hiddenTests.length === 0) errors.push('at least one hidden test is required');
+  if (isAmazonDebugProblem && !isDebugWorkspace) {
+    errors.push('amazon-debug-* amazon-oa problems must use questionType: debug-workspace');
+  }
 
-  if (Array.isArray(parsed.samples)) {
+  const visibleTests = isDebugWorkspace ? [] : readTests(problemDir, 'visible', errors);
+  const hiddenTests = isDebugWorkspace ? [] : readTests(problemDir, 'hidden', errors);
+  if (!isDebugWorkspace && visibleTests.length === 0) {
+    errors.push('at least one visible test is required');
+  }
+  if (!isDebugWorkspace && hiddenTests.length === 0) {
+    errors.push('at least one hidden test is required');
+  }
+
+  const editorialFile = path.join(problemDir, 'editorial.md');
+  const editorial = fs.existsSync(editorialFile)
+    ? fs.readFileSync(editorialFile, 'utf8')
+    : '';
+  if (isAmazonOaProblem && editorial.trim() === '') {
+    errors.push('editorial.md is required for amazon-oa problems');
+  }
+
+  if (!isDebugWorkspace && Array.isArray(parsed.samples)) {
     for (const sample of parsed.samples) {
       const match = visibleTests.find(
         (test) =>
@@ -281,18 +318,90 @@ function validateProblem(problemDir) {
     }
   }
 
-  const starterDir = path.join(problemDir, 'starter-code');
-  for (const language of parsed.supportedLanguages ?? []) {
-    const fileMap = {
-      python: 'python.py',
-      javascript: 'javascript.js',
-      cpp: 'cpp.cpp',
-      java: 'java.java',
-      c: 'c.c',
-    };
-    const starterFile = fileMap[language];
-    if (!starterFile || !fs.existsSync(path.join(starterDir, starterFile))) {
-      errors.push(`Missing starter-code/${starterFile ?? language}`);
+  if (!isDebugWorkspace) {
+    const starterDir = path.join(problemDir, 'starter-code');
+    for (const language of parsed.supportedLanguages ?? []) {
+      const fileMap = {
+        python: 'python.py',
+        javascript: 'javascript.js',
+        cpp: 'cpp.cpp',
+        java: 'java.java',
+        c: 'c.c',
+      };
+      const starterFile = fileMap[language];
+      if (!starterFile || !fs.existsSync(path.join(starterDir, starterFile))) {
+        errors.push(`Missing starter-code/${starterFile ?? language}`);
+      }
+    }
+  }
+
+  if (isDebugWorkspace) {
+    const workspaceDir = path.join(problemDir, 'workspace');
+    const manifestPath = path.join(workspaceDir, 'manifest.json');
+    const seedDir = path.join(workspaceDir, 'seed');
+
+    if (!fs.existsSync(workspaceDir) || !fs.statSync(workspaceDir).isDirectory()) {
+      errors.push('workspace directory is required for debug-workspace problems');
+    }
+
+    if (!fs.existsSync(manifestPath)) {
+      errors.push('workspace/manifest.json is required');
+    } else {
+      try {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+        if (manifest.stack !== 'node') {
+          errors.push('workspace manifest stack must be "node"');
+        }
+        if (
+          !Array.isArray(manifest.entryFiles) ||
+          manifest.entryFiles.length === 0 ||
+          manifest.entryFiles.some((value) => !isSafeRelativePath(value))
+        ) {
+          errors.push('workspace entryFiles must be a non-empty array of safe relative paths');
+        }
+        if (
+          !Array.isArray(manifest.editablePaths) ||
+          manifest.editablePaths.length === 0 ||
+          manifest.editablePaths.some((value) => !isSafeRelativePath(value))
+        ) {
+          errors.push('workspace editablePaths must be a non-empty array of safe relative paths');
+        }
+        if (!isSafeRelativePath(manifest.visibleTestScript)) {
+          errors.push('workspace visibleTestScript must be a safe relative path');
+        }
+        if (!isSafeRelativePath(manifest.submitTestScript)) {
+          errors.push('workspace submitTestScript must be a safe relative path');
+        }
+      } catch {
+        errors.push('workspace/manifest.json must be valid JSON');
+      }
+    }
+
+    if (!fs.existsSync(seedDir) || !fs.statSync(seedDir).isDirectory()) {
+      errors.push('workspace/seed directory is required');
+    }
+  }
+
+  if (isAmazonOaProblem) {
+    const judgeFacingFields = [
+      parsed.title,
+      parsed.description,
+      parsed.inputFormat,
+      parsed.outputFormat,
+      parsed.constraints,
+      editorial,
+      ...(Array.isArray(parsed.samples)
+        ? parsed.samples.flatMap((sample) => [
+            sample?.input,
+            sample?.output,
+            sample?.explanation,
+          ])
+        : []),
+    ];
+    if (judgeFacingFields.some(hasUnresolvedPlaceholder)) {
+      errors.push(
+        'amazon-oa problem content contains unresolved source placeholders',
+      );
     }
   }
 

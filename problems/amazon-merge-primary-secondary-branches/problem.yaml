@@ -1,0 +1,36 @@
+slug: amazon-merge-primary-secondary-branches
+source: amazon-oa
+title: Merge Primary and Secondary Branches Minimum Conflicts
+difficulty: medium
+description: |
+  Compute minimum conflicting commits when merging primary and secondary branch commit sequences while preserving relative order.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: primary branch sequence. Line 2: secondary branch sequence.
+outputFormat: |
+  Print the minimum conflict count.
+constraints: |
+  1 <= length <= 1000.
+samples:
+  - input: |
+      axbycz
+      abc
+    output: |
+      3
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      kitten
+      sitting
+    output: |
+      5
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

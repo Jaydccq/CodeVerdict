@@ -1,0 +1,38 @@
+slug: amazon-primary-backup-memory
+source: amazon-oa
+title: Maximum System Memory Capacity with Primary and Backup Servers
+difficulty: medium
+description: |
+  A primary server with capacity p can be protected by a backup server with capacity at least p. Pair servers to maximize total protected primary capacity.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: n. Line 2: primary capacities. Line 3: backup capacities.
+outputFormat: |
+  Print the maximum total protected primary capacity.
+constraints: |
+  1 <= n <= 200000.
+samples:
+  - input: |
+      3
+      5 3 8
+      4 8 6
+    output: |
+      16
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      4
+      10 9 2 1
+      1 2 9 10
+    output: |
+      22
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

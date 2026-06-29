@@ -7,9 +7,13 @@ import {
 } from './languages';
 import { parseProblemYaml } from './problem-parser';
 import type {
+  PracticeDebugWorkspace,
+  PracticeDebugWorkspaceFile,
+  PracticeDebugWorkspaceManifest,
   PracticeProblem,
   PracticeProblemListItem,
   PracticeProblemMetadata,
+  PracticeQuestionType,
   PracticeProblemSample,
   PracticeProblemTestCase,
 } from './problem-types';
@@ -59,6 +63,12 @@ function normalizeDescriptionSummary(description: string): string {
 
 function normalizeFixtureText(value: string): string {
   return value.replace(/\r\n/g, '\n').trimEnd();
+}
+
+export function hasUnresolvedPlaceholder(value: string): boolean {
+  return ['未提供', '未公开', '不伪造官方答案'].some((placeholder) =>
+    value.includes(placeholder),
+  );
 }
 
 function resolveProblemsDir(): string {
@@ -145,6 +155,190 @@ function readStarterCode(
   return starterCode;
 }
 
+function isSafeRelativePath(value: string): boolean {
+  return (
+    typeof value === 'string' &&
+    value.length > 0 &&
+    !path.isAbsolute(value) &&
+    !value.split(/[\\/]/).includes('..')
+  );
+}
+
+function readWorkspaceFiles(
+  baseDir: string,
+  currentDir = baseDir,
+): PracticeDebugWorkspaceFile[] {
+  return readdirSync(currentDir, { withFileTypes: true })
+    .sort((left, right) => left.name.localeCompare(right.name))
+    .flatMap((entry) => {
+      const absolutePath = path.join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        return readWorkspaceFiles(baseDir, absolutePath);
+      }
+
+      return [
+        {
+          path: path.relative(baseDir, absolutePath).replaceAll(path.sep, '/'),
+          content: readFileSync(absolutePath, 'utf8'),
+          editable: false,
+        },
+      ];
+    });
+}
+
+function selectVisibleWorkspaceFiles(
+  files: PracticeDebugWorkspaceFile[],
+  entryFiles: string[],
+  editablePaths: string[],
+): PracticeDebugWorkspaceFile[] {
+  const visiblePaths = new Set([...entryFiles, ...editablePaths]);
+  return files.filter((file) => visiblePaths.has(file.path));
+}
+
+function readDebugWorkspace(
+  problemDir: string,
+  errors: string[],
+): PracticeDebugWorkspace | undefined {
+  const workspaceDir = path.join(problemDir, 'workspace');
+  const manifestPath = path.join(workspaceDir, 'manifest.json');
+  const seedDir = path.join(workspaceDir, 'seed');
+
+  if (!existsSync(workspaceDir) || !statSync(workspaceDir).isDirectory()) {
+    errors.push('workspace directory is required for debug-workspace problems');
+    return undefined;
+  }
+
+  if (!existsSync(manifestPath)) {
+    errors.push('workspace/manifest.json is required');
+    return undefined;
+  }
+
+  if (!existsSync(seedDir) || !statSync(seedDir).isDirectory()) {
+    errors.push('workspace/seed directory is required');
+    return undefined;
+  }
+
+  let manifestRaw: Record<string, unknown>;
+  try {
+    manifestRaw = JSON.parse(readFileSync(manifestPath, 'utf8')) as Record<
+      string,
+      unknown
+    >;
+  } catch {
+    errors.push('workspace/manifest.json must be valid JSON');
+    return undefined;
+  }
+
+  const entryFiles = Array.isArray(manifestRaw.entryFiles)
+    ? manifestRaw.entryFiles.filter(
+        (value): value is string =>
+          typeof value === 'string' && isSafeRelativePath(value),
+      )
+    : [];
+  const editablePaths = Array.isArray(manifestRaw.editablePaths)
+    ? manifestRaw.editablePaths.filter(
+        (value): value is string =>
+          typeof value === 'string' && isSafeRelativePath(value),
+      )
+    : [];
+  const visibleTestScript =
+    typeof manifestRaw.visibleTestScript === 'string'
+      ? manifestRaw.visibleTestScript
+      : '';
+  const submitTestScript =
+    typeof manifestRaw.submitTestScript === 'string'
+      ? manifestRaw.submitTestScript
+      : '';
+  const stack = manifestRaw.stack;
+
+  if (stack !== 'node') errors.push('workspace manifest stack must be "node"');
+  if (entryFiles.length === 0) errors.push('workspace entryFiles must be non-empty');
+  if (editablePaths.length === 0) {
+    errors.push('workspace editablePaths must be non-empty');
+  }
+  if (!isSafeRelativePath(visibleTestScript)) {
+    errors.push('workspace visibleTestScript must be a safe relative path');
+  }
+  if (!isSafeRelativePath(submitTestScript)) {
+    errors.push('workspace submitTestScript must be a safe relative path');
+  }
+
+  const files = readWorkspaceFiles(seedDir);
+  const fileSet = new Set(files.map((file) => file.path));
+
+  for (const entryFile of entryFiles) {
+    if (!fileSet.has(entryFile)) {
+      errors.push(`workspace entry file does not exist in seed: ${entryFile}`);
+    }
+  }
+
+  for (const editablePath of editablePaths) {
+    if (!fileSet.has(editablePath)) {
+      errors.push(
+        `workspace editable file does not exist in seed: ${editablePath}`,
+      );
+    }
+  }
+
+  if (!fileSet.has(visibleTestScript)) {
+    errors.push(
+      `workspace visible test script does not exist in seed: ${visibleTestScript}`,
+    );
+  }
+  if (!fileSet.has(submitTestScript)) {
+    errors.push(
+      `workspace submit test script does not exist in seed: ${submitTestScript}`,
+    );
+  }
+
+  const editablePathSet = new Set(editablePaths);
+  const visibleFiles = selectVisibleWorkspaceFiles(files, entryFiles, editablePaths);
+  const normalizedFiles = visibleFiles.map((file) => ({
+    ...file,
+    editable: editablePathSet.has(file.path),
+  }));
+
+  const manifest: PracticeDebugWorkspaceManifest = {
+    stack: 'node',
+    runnerProfile:
+      typeof manifestRaw.runnerProfile === 'string'
+        ? manifestRaw.runnerProfile
+        : 'node-script',
+    entryFiles,
+    editablePaths,
+    visibleTestScript,
+    submitTestScript,
+  };
+
+  return {
+    stack: 'node',
+    runnerProfile: manifest.runnerProfile ?? 'node-script',
+    entryFiles,
+    editablePaths,
+    files: normalizedFiles,
+    manifest,
+    seedDir,
+  };
+}
+
+function readEditorial(
+  problemDir: string,
+  requireEditorial: boolean,
+  errors: string[],
+): string | undefined {
+  const editorialFile = path.join(problemDir, 'editorial.md');
+  if (!existsSync(editorialFile)) {
+    if (requireEditorial) errors.push('editorial.md is required');
+    return undefined;
+  }
+
+  const editorial = readFileSync(editorialFile, 'utf8').trimEnd();
+  if (requireEditorial && editorial.trim() === '') {
+    errors.push('editorial.md must be non-empty');
+  }
+  return editorial;
+}
+
 function validateSamples(
   samples: PracticeProblemSample[],
   visibleTests: PracticeProblemTestCase[],
@@ -216,8 +410,20 @@ function parseProblemMetadata(
     errors.push('difficulty must be one of: easy, medium, hard');
   }
 
+  const questionTypeRaw = raw.questionType;
+  const questionType: PracticeQuestionType =
+    questionTypeRaw === 'debug-workspace' ? 'debug-workspace' : 'algorithm';
+  if (
+    questionTypeRaw !== undefined &&
+    questionTypeRaw !== 'debug-workspace'
+  ) {
+    errors.push('questionType must be "debug-workspace" when provided');
+  }
+
   return {
     slug,
+    source: typeof raw.source === 'string' ? raw.source : undefined,
+    questionType,
     title: asString(raw.title, 'title', errors),
     difficulty: (difficulty as PracticeProblemMetadata['difficulty']) || 'easy',
     description: asString(raw.description, 'description', errors),
@@ -242,24 +448,68 @@ function loadProblem(problemDir: string): PracticeProblem {
 
   const parsed = parseProblemYaml(readFileSync(metadataFile, 'utf8'));
   const metadata = parseProblemMetadata(parsed, slug, errors);
+  const isAmazonOaProblem = metadata.source === 'amazon-oa';
+  const isDebugWorkspace = metadata.questionType === 'debug-workspace';
+  const isAmazonDebugProblem =
+    isAmazonOaProblem && slug.startsWith('amazon-debug-');
 
   if ((parsed.slug ?? slug) !== slug) {
     errors.push('slug must match the directory name');
   }
 
-  const visibleTests = readTestCases(problemDir, 'visible', errors);
-  const hiddenTests = readTestCases(problemDir, 'hidden', errors);
+  if (isAmazonDebugProblem && !isDebugWorkspace) {
+    errors.push(
+      'amazon-debug-* amazon-oa problems must use questionType: debug-workspace',
+    );
+  }
 
-  if (visibleTests.length === 0) errors.push('at least one visible test is required');
-  if (hiddenTests.length === 0) errors.push('at least one hidden test is required');
+  const visibleTests = isDebugWorkspace
+    ? []
+    : readTestCases(problemDir, 'visible', errors);
+  const hiddenTests = isDebugWorkspace
+    ? []
+    : readTestCases(problemDir, 'hidden', errors);
 
-  validateSamples(metadata.samples, visibleTests, errors);
+  if (!isDebugWorkspace) {
+    if (visibleTests.length === 0) {
+      errors.push('at least one visible test is required');
+    }
+    if (hiddenTests.length === 0) {
+      errors.push('at least one hidden test is required');
+    }
 
-  const starterCode = readStarterCode(
-    problemDir,
-    metadata.supportedLanguages,
-    errors,
-  );
+    validateSamples(metadata.samples, visibleTests, errors);
+  }
+
+  const starterCode = isDebugWorkspace
+    ? ({} as Record<PracticeLanguageKey, string>)
+    : readStarterCode(problemDir, metadata.supportedLanguages, errors);
+  const editorial = readEditorial(problemDir, isAmazonOaProblem, errors);
+  const debugWorkspace = isDebugWorkspace
+    ? readDebugWorkspace(problemDir, errors)
+    : undefined;
+
+  if (isAmazonOaProblem) {
+    const judgeFacingFields = [
+      metadata.title,
+      metadata.description,
+      metadata.inputFormat,
+      metadata.outputFormat,
+      metadata.constraints,
+      ...metadata.samples.flatMap((sample) => [
+        sample.input,
+        sample.output,
+        sample.explanation ?? '',
+      ]),
+      editorial ?? '',
+    ];
+
+    if (judgeFacingFields.some(hasUnresolvedPlaceholder)) {
+      errors.push(
+        'amazon-oa problem content contains unresolved source placeholders',
+      );
+    }
+  }
 
   if (errors.length > 0) {
     throw new Error(
@@ -269,12 +519,14 @@ function loadProblem(problemDir: string): PracticeProblem {
 
   return {
     ...metadata,
+    editorial,
     starterCode,
     languageConfigs: metadata.supportedLanguages.map(
       (language) => PRACTICE_LANGUAGES[language],
     ),
     visibleTests,
     hiddenTests,
+    debugWorkspace,
   };
 }
 
@@ -306,6 +558,7 @@ export function toProblemListItem(
 ): PracticeProblemListItem {
   return {
     slug: problem.slug,
+    questionType: problem.questionType,
     title: problem.title,
     difficulty: problem.difficulty,
     summary: normalizeDescriptionSummary(problem.description),

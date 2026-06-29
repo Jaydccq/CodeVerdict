@@ -1,0 +1,36 @@
+slug: amazon-debug-user-reset-password
+source: amazon-oa
+questionType: debug-workspace
+title: Password Reset Token Repository Debug
+difficulty: medium
+description: |
+  You are given a password-reset repository with failing token validation tests.
+  
+  Known issues reported by the test suite:
+  
+  - tokens expiring exactly now are rejected
+  - revoked tokens can still be used
+  - consuming a token does not persist used state
+  
+  Fix the repository so token validation matches the README.
+inputFormat: |
+  This problem does not use stdin/stdout input.
+  Open the seeded repository workspace, read the README, inspect the allowed source files, and run the visible test suite from the practice workspace.
+outputFormat: |
+  There is no single textual output.
+  Success is determined by the visible and hidden repository tests.
+constraints: |
+  - Only files declared editable by the workspace manifest may be modified.
+  - The runtime environment is Node.js.
+  - The seeded repository and tests are deterministic.
+samples:
+  - input: |
+      Open README.md and the source files listed in the workspace editor.
+    output: |
+      After fixing the bugs, all visible tests should report PASS.
+    explanation: |
+      This workspace problem is graded by repository tests rather than stdin and stdout.
+supportedLanguages:
+  - javascript
+timeLimitMs: 2000
+memoryLimitKb: 262144

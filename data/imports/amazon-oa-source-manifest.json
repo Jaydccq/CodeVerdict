@@ -1,0 +1,613 @@
+{
+  "sourcePath": "/Users/hongxichen/Downloads/amazon_oa_questions_structured_fields.html",
+  "generatedAt": "2026-06-28T07:46:45.863Z",
+  "counts": {
+    "total": 27,
+    "algorithm": 16,
+    "aiCodingDebug": 11
+  },
+  "items": [
+    {
+      "sourceId": "lc-01",
+      "category": "algorithm",
+      "title": "Drone Delivery Circular Hub Minimum Travel Time",
+      "tags": [
+        "Circular Array",
+        "Prefix Sum",
+        "Shortest Path on Cycle",
+        "Simulation"
+      ],
+      "fields": {
+        "题目标题": "Drone Delivery Circular Hub Minimum Travel Time",
+        "题干描述": "Amazon 的下一代无人机配送网络由 m 个 hub 组成，hub 按环形排列，Hub 1 与 Hub m 相邻。无人机每次可以移动到相邻 hub，Hub i 和相邻 hub 之间的 travel time 由 transitionTime[i] 给出。\n\nAmazon 收到一组 priority delivery requests，包裹必须按照 requestedHubs 中给出的 hub 顺序完成 pickup 或 delivery。无人机从 Hub 1 出发，求完成所有 request 的最小总 travel time。\n\n注意：题目使用 1-based indexing。经验补充里提到 transitionTime[i] 很可能表示离开 Hub i 的 cost，首尾相连位置需要小心。",
+        "输入格式": "m: hub 数量\nn: request 数量\ntransitionTime: 长度为 m 的数组\nrequestedHubs: 长度为 n 的数组，表示需要按顺序访问的 hub\n\n函数形式可整理为：\nminimumTotalTravelTime(m, transitionTime, requestedHubs) -> long",
+        "输出格式": "返回从 Hub 1 出发并按顺序完成所有 requestedHubs 的最小总 travel time。",
+        "样例输入": "m = 3\nn = 4\ntransitionTime = [3, 2, 1]\nrequestedHubs = [1, 3, 3, 2]",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. requestedHubs 中连续两个 hub 相同，移动成本应为 0。\n2. 从 Hub 1 到 Hub m 的首尾相连路径。\n3. 顺时针距离和逆时针距离相等。\n4. requestedHubs 很长，需要 O(m+n) 或 O(m+n log m) 级别，不能每段暴力走环。",
+        "时间限制": "截图经验中该类 coding 题通常为 40 分钟。正式题面时间限制未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-10",
+      "category": "algorithm",
+      "title": "Circular Array Prefix Sum Multi-query Distance",
+      "tags": [
+        "Circular Array",
+        "Prefix Sum",
+        "Range Query",
+        "Shortest Path on Cycle",
+        "LeetCode 1184 Variant"
+      ],
+      "fields": {
+        "题目标题": "Circular Array Prefix Sum Multi-query Distance",
+        "题干描述": "题目涉及 circular array 和 prefix sum。整体比较像 LeetCode 1184 Distance Between Bus Stops 的变形，但不完全一样。LeetCode 1184 是算一次两点之间的最短距离，这题更像多段查询累加。\n\n可能题意：给一个环形距离数组，以及一组请求点或查询点。每次查询两个点之间在环上的最短距离，最后把所有查询的最短距离累加。",
+        "输入格式": "distance: 环形相邻点之间的距离数组\nqueries 或 requested points: 多个点对，或者一串需要依次访问的点\n\n函数形式可整理为：\ntotalCircularDistance(distance, queries) -> long\n或\ntotalCircularDistance(distance, requestedPoints) -> long",
+        "输出格式": "返回所有查询段在环上的最短距离之和。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 单次查询与 LeetCode 1184 一致。\n2. 多段查询中起点等于终点。\n3. start > destination 时 prefix sum 取模处理。\n4. 总距离很大，需要 long。",
+        "时间限制": "未提供，按 Amazon coding 部分经验可按 40 分钟准备。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-05",
+      "category": "algorithm",
+      "title": "Construct Lexicographically Largest Sequence",
+      "tags": [
+        "Greedy",
+        "Max Heap",
+        "Priority Queue",
+        "Dynamic Availability"
+      ],
+      "fields": {
+        "题目标题": "Construct Lexicographically Largest Sequence",
+        "题干描述": "构造一个长度为 m 的 lexicographically largest 序列 s。总共执行 m 次操作。每次操作从 values list 中选择任意一个当前 available 的元素追加到 s。\n\n一个元素 available 的条件是对应 state[i] == 1。每次操作完成后，state 中所有紧挨在 1 右侧的 0 都会被翻转为 1。目标是让最终序列字典序最大。",
+        "输入格式": "values: 整数数组\nstate: 由 0/1 组成的字符串或数组\nm: 需要执行的操作次数，也就是输出序列长度\n\n函数形式可整理为：\nconstructLargestSequence(values, state, m) -> int[]",
+        "输出格式": "返回长度为 m 的字典序最大序列 s。",
+        "样例输入": "values = [10, 5, 7, 6]\nstate = \"0101\"\nm = 2",
+        "样例输出": "[6, 7]",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 初始只有一个元素可用。\n2. 多个 0 在一次操作后同时被解锁。\n3. values 有重复值。\n4. m 大于初始可用数量，需要动态解锁。\n5. 用 max heap 维护当前可用最大值，避免每轮全扫描。",
+        "时间限制": "截图中该题标为第一题 40 分钟。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-06",
+      "category": "algorithm",
+      "title": "Maximum Money by Taking K Consecutive Bags",
+      "tags": [
+        "Sliding Window",
+        "Prefix Sum",
+        "Intervals",
+        "Sweep Line"
+      ],
+      "fields": {
+        "题目标题": "Maximum Money by Taking K Consecutive Bags",
+        "题干描述": "输入有一个整数 k，表示要连续拿多少个 bag，还有一个 segments[n][3]。每个 segment 包含 start index、end index、该范围内每个 bag 的 money。end index 是 inclusive。\n\n目标是返回连续拿 k 个 bag 能获得的最大 money。未被任何 segment 覆盖的位置可理解为 money = 0。",
+        "输入格式": "k: 连续 bag 数量\nn: segment 数量\nsegments: n x 3 数组，每个元素为 [start, end, moneyPerBag]\n\n函数形式可整理为：\nmaximumMoney(k, segments) -> long",
+        "输出格式": "返回任意连续 k 个 bag 的最大 money 总和。",
+        "样例输入": "k = 5\nn = 4\nsegments = [[1, 4, 2], [6, 6, 5], [7, 7, 7], [9, 10, 1]]",
+        "样例输出": "16\n\n解释：选择 bags 3 到 7，得到 2 + 2 + 0 + 5 + 7 = 16。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. k 落在大量空白区间中。\n2. segment 之间有 gap。\n3. 最优窗口左端或右端不一定等于某个 segment 边界。\n4. index 和 money 很大，需要 long。\n5. 不能展开成完整数组，应用 sweep line 或压缩区间。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-08",
+      "category": "algorithm",
+      "title": "Merging Branch Minimum Commit Conflict Count, Incomplete Version",
+      "tags": [
+        "Dynamic Programming",
+        "Sequence Merge",
+        "Inversion Counting"
+      ],
+      "fields": {
+        "题目标题": "Merging Branch Minimum Commit Conflict Count, Incomplete Version",
+        "题干描述": "Merging branch 题：返回 merge 后最少 commit conflict 数。要求合并两个分支，并保持每个分支内部 commit 的相对顺序。\n\n这份截图题干不完整，完整版本见题目 20。经验里提到有人一开始用 backtracking 算排列组合，后来发现暴力不可行，应该往 DP 方向想。",
+        "输入格式": "primary: primary branch 的 commit 字符串\nsecondary: secondary branch 的 commit 字符串\n\n完整输入格式见题目 20。",
+        "输出格式": "返回任意合法 merge 后的最小 conflict 数。",
+        "样例输入": "截图不完整，完整样例见题目 20。",
+        "样例输出": "截图不完整，完整样例见题目 20。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 两个字符串都长度为 1。\n2. 所有字符相同。\n3. 一个字符串整体优先级都高于另一个。\n4. 长度到 1000，不能枚举所有 merge。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-11",
+      "category": "algorithm",
+      "title": "Amazon Warehouse Price Adjustment Minimum Operations",
+      "tags": [
+        "Greedy",
+        "Math",
+        "Binary Search on Answer",
+        "Operation Counting"
+      ],
+      "fields": {
+        "题目标题": "Amazon Warehouse Price Adjustment Minimum Operations",
+        "题干描述": "Amazon warehouse 的 manager 通过改变产品价格来调整 inventory。当前有 n 个 products，第 i 个 product 的价格为 prices[i]。给定 k 和 d。\n\n目标是让 inventory 中最高价格和最低价格的差值严格小于 d，并求最少 operation 数。一次 operation 选择 x, y 和 p，其中 1 <= x <= y <= n，1 <= p <= k，把 prices[x] 增加 p，把 prices[y] 减少 p。\n\n注意：题目描述中 prices 使用 1-based indexing。有人提到可以参考 LP 思路，但正确性未确认。",
+        "输入格式": "n: 产品数量\nprices: 产品价格数组\nk: 单次可调整的最大幅度\nd: 目标价格差，要求 max(prices) - min(prices) < d\n\n函数形式可整理为：\nminimumOperations(n, prices, k, d) -> int",
+        "输出格式": "返回满足最高价和最低价差值严格小于 d 所需的最少操作次数。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 初始已经满足差值 < d，输出 0。\n2. 所有价格相同。\n3. k = 1，需要多次微调。\n4. d = 1，要求所有价格最终相同。\n5. 操作保持总和不变，所以某些目标区间可能因总和约束不可行，需要严谨判断。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-12",
+      "category": "algorithm",
+      "title": "Maximum Total DataFlow from Unique Node Pairs",
+      "tags": [
+        "Sorting",
+        "Top K Pair Sums",
+        "Max Heap",
+        "Greedy"
+      ],
+      "fields": {
+        "题目标题": "Maximum Total DataFlow from Unique Node Pairs",
+        "题干描述": "Amazon Data Infrastructure Team 需要为 streamCount 个 data channels 选择 main 和 secondary processing nodes。每个 channel 的 dataFlow 等于 bandwidth[main] + bandwidth[secondary]。\n\n每个 channel 必须使用唯一的 pair。注意 (x, y) 和 (y, x) 被视为不同 connections，且 (x, x) 有效。目标是最大化 streamCount 个 pair 的 total dataFlow。",
+        "输入格式": "bandwidth: 整数数组，表示每个 processing node 的 bandwidth\nstreamCount: 需要选择的 data channel 数量\n\n函数形式可整理为：\nmaximumTotalDataFlow(bandwidth, streamCount) -> long",
+        "输出格式": "返回能获得的最大 total dataFlow。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. streamCount = 1。\n2. streamCount 接近 n * n。\n3. bandwidth 有重复值。\n4. 需要把 (x,y) 和 (y,x) 当作不同 pair。\n5. (x,x) 合法，不能漏掉。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-13",
+      "category": "algorithm",
+      "title": "Maximum System Memory Capacity with Primary and Backup Servers",
+      "tags": [
+        "Sorting",
+        "Greedy Pairing"
+      ],
+      "fields": {
+        "题目标题": "Maximum System Memory Capacity with Primary and Backup Servers",
+        "题干描述": "Amazon developers 正在优化 cloud system capacity。系统有偶数个 servers，第 i 个 server 的 memory capacity 为 memory[i]。若系统有 2x 个 servers，则 x 个为 primary，x 个为 backup。\n\n每个 primary server P 需要有对应 backup server B。截图中条件只显示为 memory >= memory，左右变量名不完整。根据题意推断，backup 的 memory 需要大于或等于对应 primary。系统 memory capacity 定义为所有 primary servers 的 memory 之和。目标是最大化这个和。",
+        "输入格式": "n: server 数量，保证为偶数\nmemory: 长度为 n 的数组\n\n函数形式可整理为：\nmaximumSystemMemory(memory) -> long",
+        "输出格式": "返回可形成的最大 system memory capacity，即所有 primary server memory 之和。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. n = 2。\n2. memory 全部相等。\n3. 大小差异很大，需要正确配对。\n4. 若 backup 必须 >= primary，常见策略是排序后合理配对最大化较小一方或 primary 之和。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-14",
+      "category": "algorithm",
+      "title": "Second OA Q2, Warehouse Price Adjustment",
+      "tags": [
+        "Greedy",
+        "Math",
+        "Binary Search on Answer",
+        "Operation Counting"
+      ],
+      "fields": {
+        "题目标题": "Second OA Q2, Warehouse Price Adjustment",
+        "题干描述": "这是题目 11 的同源重复信息。截图标题为 Second OA Q2: Problem Statement，题意仍是通过一次增加一个价格、减少另一个价格的操作，使最高价和最低价差值严格小于 d，并求最少操作次数。",
+        "输入格式": "同题目 11：n, prices, k, d。",
+        "输出格式": "同题目 11：返回最少操作次数。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "同题目 11。官方隐藏测试 input/output 未公开。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-16",
+      "category": "algorithm",
+      "title": "2026 Amazon Intern OA Q1, Robot Work or Idle State Assignment",
+      "tags": [
+        "Combinatorics",
+        "Counting",
+        "Sorting",
+        "Threshold Constraints"
+      ],
+      "fields": {
+        "题目标题": "2026 Amazon Intern OA Q1, Robot Work or Idle State Assignment",
+        "题干描述": "系统里有一组机器人，每个机器人只有 working 和 idle 两种状态。每个机器人有自己的 coordination threshold。它希望系统里正在工作的机器人数量达到某个条件，否则会故障。\n\n截图规则：如果机器人自己在工作，但全系统正在工作的机器人数量不够，它会坏；如果机器人自己在待机，但正在工作的机器人数量已经达到或超过它的门槛，它也会坏。只要任意机器人故障，系统就不稳定。任务是统计多少种 working/idle 分配方式能保证没有机器人故障。",
+        "输入格式": "n: 机器人数量\nthreshold 或类似数组: 每个机器人的协调门槛\n\n完整变量名、输入格式、约束未在截图中显示。",
+        "输出格式": "返回合法分配方式数量。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 所有 threshold 相同。\n2. 没有机器人工作或全部机器人工作。\n3. threshold 边界等于 working count。\n4. n 较大，需要排序计数，不能枚举 2^n。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-17",
+      "category": "algorithm",
+      "title": "2026 Amazon Intern OA Q2, Warehouse Inventory Emergency Restocking",
+      "tags": [
+        "Greedy",
+        "Prefix Sum",
+        "Event Simulation",
+        "Capacity Constraint"
+      ],
+      "fields": {
+        "题目标题": "2026 Amazon Intern OA Q2, Warehouse Inventory Emergency Restocking",
+        "题干描述": "一个新仓库在接下来连续几天会发生固定事件。有些天进货，有些天出货。出货不够会让库存变成负数。有些天晚上会检查，一旦检查时库存为负，仓库会被关停，任务失败。\n\n经理每天早上可以选择紧急补货，补多少都可以，但仓库有容量上限，任何时刻库存不能超过最大容量。目标是保证所有检查时库存不为负，且每天库存不超过容量上限，求最少需要在哪些天进行紧急补货。做不到则返回失败。",
+        "输入格式": "days: 连续天数\nevents: 每天进货或出货变化\nchecks: 哪些天晚上检查\ncapacity: 仓库最大容量\n\n完整变量名、输入格式、约束未在截图中显示。",
+        "输出格式": "返回最少紧急补货天数；如果无论如何都做不到，返回失败标记。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 没有任何检查。\n2. 第一天就会负库存。\n3. 某天出货量超过 capacity，可能 impossible。\n4. 补货后后续自然进货导致超容量。\n5. 需要贪心在必要检查前补足。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-18",
+      "category": "algorithm",
+      "title": "Grid Minimum Distance to 1 After Flipping at Most One 0",
+      "tags": [
+        "Grid",
+        "Multi-source BFS",
+        "Shortest Path",
+        "Distance Transform"
+      ],
+      "fields": {
+        "题目标题": "Grid Minimum Distance to 1 After Flipping at Most One 0",
+        "题干描述": "给定一个只包含 0 和 1 的二维数组，最多可以把一个 0 变成 1。任务是找到操作后从 0 到 1 的最小距离。\n\n截图没有完整显示 distance 的正式定义。根据描述，这很可能是 grid distance 问题，可以考虑从所有 1 出发做 BFS，或者先计算每个格子到最近 1 的距离，再枚举翻转哪个 0 最优。",
+        "输入格式": "grid: m x n 的 0/1 矩阵\n最多允许翻转一个 0 为 1\n\n完整输入格式未提供。",
+        "输出格式": "返回翻转后某种定义下的最小 0 到 1 距离。distance 定义截图未完整展示。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 全 1。\n2. 全 0。\n3. 只有一个 1。\n4. 只有一个 0。\n5. 边界和角落位置。",
+        "时间限制": "面经说该题不难，具体时间限制未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-20",
+      "category": "algorithm",
+      "title": "Merge Primary and Secondary Branches, Minimum Conflicts",
+      "tags": [
+        "Dynamic Programming",
+        "Sequence Merge",
+        "Inversion Counting"
+      ],
+      "fields": {
+        "题目标题": "Merge Primary and Secondary Branches, Minimum Conflicts",
+        "题干描述": "Amazon developers 要把 primary 和 secondary 两个源码分支合并成一个统一分支，同时保持每个分支内部 commit 的相对顺序不变。每个字符代表一个 commit 的优先级，字母序越小优先级越高。\n\n如果合并后的分支中，一个低优先级 commit 被放在一个高优先级 commit 前面，就产生一个 conflict。目标是在所有合法 merge 方案中，求最少 conflict 数。",
+        "输入格式": "primary: string，primary branch 的 commit sequence\nsecondary: string，secondary branch 的 commit sequence\n\n函数：\ngetMinimumConflicts(primary: string, secondary: string) -> int\n\n约束：\n1 <= |primary|, |secondary| <= 1000\nprimary 和 secondary 只包含小写英文字母。",
+        "输出格式": "int，合法 merge 后的最小 conflict 数。",
+        "样例输入": "primary = \"zc\"\nsecondary = \"d\"",
+        "样例输出": "2\n\n可能 merge：\n\"zcd\" -> 2\n\"zdc\" -> 3\n\"dzc\" -> 2",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n截图 Sample Case 0：\nInput:\nprimary = \"dae\"\nsecondary = \"add\"\nOutput:\n1\n\n可能测试点：\n1. 字符串长度到 1000。\n2. 两串已有完全升序或降序。\n3. 大量重复字符。\n4. 需要 DP 或计数优化，不能枚举所有 merge。",
+        "时间限制": "截图显示当时剩余约 31 分钟，但正式总时限未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-22",
+      "category": "algorithm",
+      "title": "Optimal Inventory Quality Conversion Minimum Cost",
+      "tags": [
+        "Intervals",
+        "Frequency Counting",
+        "Hash Map",
+        "Greedy Partitioning"
+      ],
+      "fields": {
+        "题目标题": "Optimal Inventory Quality Conversion Minimum Cost",
+        "题干描述": "Amazon 仓库经理需要修改 inventory。当前有 n 个 products，第 i 个产品经过 quality check 后的质量值为 quality[i]。目标是得到 optimal inventory，使得每一种 quality value 的所有出现位置必须连续。\n\n一次操作可以选择两个 quality values x 和 y，把所有 quality 为 x 的产品都改成 y。操作成本为被修改的产品数量。quality 可以为负数，表示 poor quality。",
+        "输入格式": "n: 产品数量\nquality: 长度为 n 的整数数组，值可以为负\n\n函数形式可整理为：\nminimumConversionCost(quality) -> int",
+        "输出格式": "返回把 inventory 转换为 optimal inventory 的最小 money cost。",
+        "样例输入": "n = 7\nquality = [7, 7, 5, 7, 5, 5, 3]",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 所有 quality 已经各自连续。\n2. 全部 quality 相同。\n3. quality 有负数。\n4. 某个值出现多段，需要合并或改名。\n5. 大量 distinct values，需要 hash map 和区间处理。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-24",
+      "category": "algorithm",
+      "title": "Security Unit Relocation, Max Protected Population",
+      "tags": [
+        "Dynamic Programming",
+        "Greedy",
+        "Path DP",
+        "Weighted Coverage"
+      ],
+      "fields": {
+        "题目标题": "Security Unit Relocation, Max Protected Population",
+        "题干描述": "有 n 个城市，每个城市有一个人口值。unit[i] = 1 表示第 i 个城市有 security unit，unit[i] = 0 表示没有。位于城市 i 的 security unit 可以选择向左移动到城市 i - 1，前提是 i > 1。每个 unit 最多移动一次。\n\n所有移动完成后，只要一个城市至少有一个 security unit，就算被保护。目标是最大化被保护城市的人口总和。",
+        "输入格式": "n: 城市数量\npopulation: 长度为 n 的人口数组\nunit: 长度为 n 的 0/1 字符串或数组\n\n函数形式可整理为：\nmaxProtectedPopulation(population, unit) -> long",
+        "输出格式": "返回最大 protected population 总和。",
+        "样例输入": "n = 5\npopulation = [10, 5, 8, 9, 6]\nunit = \"01101\"",
+        "样例输出": "27",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. unit 全 0，答案为 0。\n2. unit 全 1，移动可能造成覆盖浪费。\n3. 相邻多个 unit 都可左移时的冲突与重复覆盖。\n4. 首个城市的 unit 不能左移。\n5. population 很大，需要 long。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "lc-25",
+      "category": "algorithm",
+      "title": "Product Variant Conversion Minimum Cost",
+      "tags": [
+        "Sliding Window",
+        "Greedy",
+        "Dynamic Programming",
+        "Interval Choice"
+      ],
+      "fields": {
+        "题目标题": "Product Variant Conversion Minimum Cost",
+        "题干描述": "Amazon fulfillment center 管理一种产品的两种 variants：A 用 0 表示，B 用 1 表示。product[i] = 1 表示 variant B，product[i] = 0 表示 variant A。\n\n给定正整数 k。一次操作选择长度为 k 的子数组 [l, r]，本次操作成本是 product[l..r] 当前值之和，然后在这个窗口中选择一个 product[p] = 1 的位置，把它变成 0。目标是把所有 1 变成 0，并让总成本最小。",
+        "输入格式": "n: 产品数量\nproduct: 0/1 数组\nk: 每次可选择的固定窗口长度\n\n函数形式可整理为：\nminimumConversionCost(product, k) -> long",
+        "输出格式": "返回把所有 1 变成 0 的最小总成本。",
+        "样例输入": "截图或原资料未提供。",
+        "样例输出": "截图或原资料未提供。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. product 全 0，输出 0。\n2. product 全 1。\n3. k = 1，每次只能消掉当前位置，成本都为 1。\n4. k = n，每次窗口包含全数组。\n5. 稀疏 1 与密集 1 的操作顺序差异。",
+        "时间限制": "未提供。",
+        "内存限制": "截图或原资料未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-02",
+      "category": "ai-coding-debug",
+      "title": "MovieDB Recommendation Debug",
+      "tags": [
+        "Backend Debug",
+        "Recommendation",
+        "User Preference",
+        "API/UI Validation"
+      ],
+      "fields": {
+        "题目标题": "MovieDB Recommendation Debug",
+        "题干描述": "MovieDB 是一个在线电影应用，用户可以浏览电影、提交评分、分享 reviews。当前个性化推荐功能坏了。即使用户提交了偏好，Recommended For You 区域仍然不显示推荐。\n\n补充信息：用户有 custom movie list，但添加 movie 到 list 失败。任务是使用 AI assist debug 找 bug 并修复，重点在后端数据流、推荐生成逻辑、用户偏好保存和 UI/API 联动。",
+        "输入格式": "输入不是标准 stdin，而是一个应用 repo、登录账号和可复现 UI/API 流程。\n\n测试账号：\nEmail: sam.rivera@email.com\nPassword: Password@123\n\n复现流程：\n1. 登录用户。\n2. 选择任意 movie。\n3. Mark this movie as \"watched\"。\n4. Submit rating。\n5. 返回 home page，查看 \"Recommended For You\"。",
+        "输出格式": "输出不是 stdout，而是应用行为和测试结果。\n\n期望：\n1. 用户的 watched/rating/preference 被正确保存。\n2. 推荐逻辑能基于用户偏好生成 movies。\n3. Home page 的 Recommended For You 区域能显示推荐。\n4. 相关 unit/integration tests 全部通过。",
+        "样例输入": "登录：sam.rivera@email.com / Password@123\n操作：任选电影 -> watched -> submit rating -> home page",
+        "样例输出": "Recommended For You section should populate with movies based on the user&#x27;s preferences.",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. rating 保存后推荐立即可见。\n2. custom list 添加 movie 成功。\n3. 空偏好用户不报错。\n4. 多用户推荐互不污染。\n5. 推荐 API response shape 与 README 一致。",
+        "时间限制": "截图标注 60 分钟。",
+        "内存限制": "不适用。AI Coding 题主要受 repo 测试和运行环境限制，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-03",
+      "category": "ai-coding-debug",
+      "title": "AI Assist Debug, Schedule Payment or Similar Backend Bug",
+      "tags": [
+        "Backend Debug",
+        "Payment Scheduling",
+        "Test Driven Debugging",
+        "Boundary Conditions"
+      ],
+      "fields": {
+        "题目标题": "AI Assist Debug, Schedule Payment or Similar Backend Bug",
+        "题干描述": "给一个 code repo，里面有多个 failing test cases。需要根据测试失败原因定位并修复 bug。经验里提到 schedule payment 类问题，常见错误包括比较符号写反、边界条件错误、变量没有更新。",
+        "输入格式": "输入是 repo、README、测试输出和 failing test cases。\n\n典型 debug 输入：\n1. README 的 API contract。\n2. pytest/jest/mvn test 等测试输出。\n3. 某个 schedule payment API 或 service 的失败日志。",
+        "输出格式": "输出是修复后的代码行为：\n1. Payment scheduling 逻辑符合 README。\n2. 边界条件正确。\n3. 所有 predefined tests 通过。",
+        "样例输入": "可能失败点：\n== 写成 !=\n< 0 应为 <= 0\n变量未 update",
+        "样例输出": "对应 test case pass，schedule payment 被正确创建、验证或执行。",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. 金额为 0 或负数。\n2. scheduled date 过期或正好等于当前时间。\n3. 重复 schedule。\n4. payment 执行后状态未更新。\n5. 账号余额或收款方不存在。",
+        "时间限制": "经验里通常为 60 分钟。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-04",
+      "category": "ai-coding-debug",
+      "title": "AI Assist Debug, User Reset Password",
+      "tags": [
+        "Backend Debug",
+        "Password Reset",
+        "Timestamp Expiry",
+        "Persistence"
+      ],
+      "fields": {
+        "题目标题": "AI Assist Debug, User Reset Password",
+        "题干描述": "业务场景是用户 reset password。正确流程应为 generate verification code，verify code，然后 reset password。已知 bug 包括 verification code 未生成，过期时间未校验，URL file 中变量未定义，以及 reset 后新密码没有存入 user profile。",
+        "输入格式": "输入是 repo、README、测试、reset password API 流程。\n\n核心输入信息：\n1. 用户请求生成 verification code。\n2. 系统验证 code。\n3. 系统 reset password。\n4. 测试要求 code 30 秒内有效。",
+        "输出格式": "期望输出：\n1. verification code 正确生成。\n2. generated_at timestamp 被保存。\n3. verify 时检查当前时间是否在 30 秒内。\n4. reset 后新 password 写入 user profile。\n5. 所有 tests 通过。",
+        "样例输入": "Generate code -> Verify code within 30 seconds -> Reset password",
+        "样例输出": "Password reset succeeds, new password is persisted in user profile.",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. code 未生成就 verify。\n2. code 过期超过 30 秒。\n3. code 错误。\n4. reset 后用新密码登录。\n5. URL route variable 命名与 tests 不一致。",
+        "时间限制": "截图标注 60 分钟。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-07",
+      "category": "ai-coding-debug",
+      "title": "AI Assist Debug, Jira Style Issue Comment Platform",
+      "tags": [
+        "Backend Debug",
+        "Issue Tracking",
+        "Comment API",
+        "Handler Service Layer"
+      ],
+      "fields": {
+        "题目标题": "AI Assist Debug, Jira Style Issue Comment Platform",
+        "题干描述": "类似 Jira 的 issue platform，用户可以在 issue 上写 comment。主要 bug 是 create comment 后不显示，update comment 后不显示。常见原因是 comment 没有保存、没有和 issue 关联、更新后没有持久化，或者 auth/status code/message 不符合 README。",
+        "输入格式": "输入是 repo、README API contract、comment create/update 操作和 tests。\n\n关键输入：\n1. issue id。\n2. comment body。\n3. 当前 user identity。\n4. create/update comment endpoint。",
+        "输出格式": "期望输出：\n1. create comment 后 comment 出现在 issue detail。\n2. update comment 后更新内容可见。\n3. 未认证返回 401。\n4. 无权限返回 403。\n5. 用户只能修改自己的 comment。\n6. status code 和 message 与 README 一致。",
+        "样例输入": "POST /comments 或 POST /issues/{issueId}/comments\nPUT /comments/{commentId}\nbody: comment text",
+        "样例输出": "Comment is persisted and linked to the issue. Update returns the expected status and response body.",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. comment 创建后 issue.comments 包含该 comment。\n2. update 后数据库保存新 body。\n3. 非 owner 更新返回 403。\n4. 不存在 issue/comment 返回 404。\n5. message 字符串完全匹配。",
+        "时间限制": "经验里通常为 60 分钟。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-09",
+      "category": "ai-coding-debug",
+      "title": "Amazon Return System AI Debug",
+      "tags": [
+        "Backend Debug",
+        "Risk Scoring",
+        "Business Rules",
+        "Test Driven Debugging"
+      ],
+      "fields": {
+        "题目标题": "Amazon Return System AI Debug",
+        "题干描述": "Amazon return system 会给每个 customer 一个 rating，可能基于退货次数、商品价值、账户活跃时长等因素。如果 score 太高，表示风险太高，系统应该提示 item is not returnable。Bug 是某些情况下系统允许了本不该允许的退货。任务是用 AI assistant 定位并修复 6 个问题。",
+        "输入格式": "输入是 return system repo、测试用例、customer/item 数据和 risk score 规则。\n\n可能输入字段：\ncustomer return history\nitem value\naccount age\ncurrent return request",
+        "输出格式": "期望输出：\n1. 高风险 case 返回 not returnable。\n2. 低风险 case 允许 return。\n3. 6 个相关 bug 修复。\n4. 所有 tests 通过。",
+        "样例输入": "某个 customer 的 return request，包含历史退货、商品价值、账户时长等信息。",
+        "样例输出": "Risk too high -> item is not returnable.",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. score 正好等于阈值。\n2. 高价值商品。\n3. 新账号多次退货。\n4. 多因素叠加风险。\n5. 规则顺序和短路逻辑。\n6. 返回 message 与 status code 完全匹配。",
+        "时间限制": "未提供，经验里 AI Coding 常见为 60 分钟。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-19",
+      "category": "ai-coding-debug",
+      "title": "AI Support Debug, Python Django Backend API Tests",
+      "tags": [
+        "AI Support",
+        "Django Backend",
+        "API Tests",
+        "Test Driven Debugging"
+      ],
+      "fields": {
+        "题目标题": "AI Support Debug, Python Django Backend API Tests",
+        "题干描述": "AI Support 题，技术栈大概率是 Python Django Backend。一共有 6 个 test cases，需要逐个 debug，让所有 tests 通过。整体逻辑不难，主要是面向 test 编程，时间比较紧。",
+        "输入格式": "输入是 Django backend repo、README、6 个 failing test cases、API call 和 terminal log。\n\n建议先让 AI 定位 API file，再根据 tests 的 API call 调整 view/serializer/service。",
+        "输出格式": "输出是所有 6 个 tests all pass，API 行为和 response 与 tests 一致。",
+        "样例输入": "pytest 或平台 test output 中的 failing API call、status code mismatch、response body mismatch。",
+        "样例输出": "6 test cases all pass.",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. endpoint route 名称。\n2. request body 字段缺失。\n3. serializer validation。\n4. response status code。\n5. 数据库写入或更新。\n6. 权限和用户隔离。",
+        "时间限制": "60 分钟，经验里刚好能做完 6 tests。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-21",
+      "category": "ai-coding-debug",
+      "title": "Wallet App Recurring Payments AI Debug",
+      "tags": [
+        "Backend Debug",
+        "Wallet App",
+        "Recurring Payments",
+        "Scheduler",
+        "Boundary Conditions"
+      ],
+      "fields": {
+        "题目标题": "Wallet App Recurring Payments AI Debug",
+        "题干描述": "Wallet app 是数字支付平台，用户可以收发钱、管理钱包，并设置 recurring payments。Recurring payments 支持 daily、weekly、monthly、yearly。当前 bugs 影响 payment creation、scheduling 和 processing，任务是修 backend bugs。",
+        "输入格式": "输入是 repo、README、登录账号、Schedule Auto-Pay 流程、测试输出。\n\n测试账号：\nEmail: user1@example.com\nPassword: user1password\n\n复现：\n1. Go to Schedule Auto-Pay。\n2. Provide recipient details。\n3. 测试手机号：9876543211。",
+        "输出格式": "期望输出：\n1. recurring payment 可以被正确创建。\n2. daily/weekly/monthly/yearly schedule 正确。\n3. payment processing 更新状态和余额。\n4. 6 个 failing tests 全部通过。",
+        "样例输入": "Email: user1@example.com\nPassword: user1password\nRecipient phone: 9876543211",
+        "样例输出": "Auto-Pay is scheduled correctly and backend tests pass.",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. interval 边界，daily/weekly/monthly/yearly。\n2. 金额为 0 或余额不足。\n3. next run date 更新。\n4. 取消或重复 schedule。\n5. == / !=、<0 / <=0 这类边界 bug。",
+        "时间限制": "60 分钟。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-23",
+      "category": "ai-coding-debug",
+      "title": "AI Coding Debug, Issue and Comment Activity Logs",
+      "tags": [
+        "AI Coding",
+        "Issue Tracking",
+        "Activity Log",
+        "API Contract",
+        "Tests"
+      ],
+      "fields": {
+        "题目标题": "AI Coding Debug, Issue and Comment Activity Logs",
+        "题干描述": "类似 Jira 的 issue tracking 平台，任务是修复 issue 和 comment 相关操作日志。需要在 issue/comment 的 create、update、delete API 后添加 Activity，并保证 action 字符串与测试要求完全一致。",
+        "输入格式": "输入是 issue/comment API repo、README、create/update/delete 操作和 tests。\n\n关键输入：\nissue id\ncomment id\naction type\ncurrent user\nrequest body",
+        "输出格式": "期望输出：\n1. 每次相关 API 操作后生成 Activity。\n2. action string 完全匹配 tests。\n3. status code、message、activity response 都符合 API contract。",
+        "样例输入": "Create issue/comment\nUpdate issue/comment\nDelete issue/comment",
+        "样例输出": "Activity record created with the exact expected action string.",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. issue create 后 activity。\n2. comment create 后 activity。\n3. update/delete 对应 action 字符串。\n4. authn/authz。\n5. 不存在资源时不应生成 activity。",
+        "时间限制": "经验里 AI Coding 常见为 60 分钟。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-rbac",
+      "category": "ai-coding-debug",
+      "title": "Banking App Role-Based Access Control RBAC Debug",
+      "tags": [
+        "Java Spring Boot",
+        "RBAC",
+        "JWT",
+        "Authorization",
+        "API Contract",
+        "Unit Tests"
+      ],
+      "fields": {
+        "题目标题": "Banking App Role-Based Access Control RBAC Debug",
+        "题干描述": "Banking App 允许用户转账和收款，但存在访问控制漏洞，导致普通用户可以查看其他账户交易。任务是在 Java Spring Boot 后端修复 RBAC，保证普通用户只能访问自己账户的交易，admin 可以查看所有账户和交易，并能删除其他用户账户。",
+        "输入格式": "输入是 Java Spring Boot + Angular repo、README、JWT 登录和 API tests。\n\n普通用户：\nEmail: yalen@gmail.com\nPassword: yalen123\n\n管理员：\nEmail: david@gmail.com\nPassword: david123\n\n关键 API：\nPOST /api/core-banking/auth/signin\nPOST /api/core-banking/transaction\nGET /api/core-banking/transaction/transactionHistory?fromDate=2024-01-01&toDate=2024-01-31\nGET /api/core-banking/transaction/transactionHistory/accounts/{accountId}?fromDate=2024-01-01&toDate=2024-01-31",
+        "输出格式": "期望输出：\n1. 普通用户只能看到自己账户相关 transactions。\n2. 普通用户访问 admin-only account history 返回 403。\n3. 未认证返回 401。\n4. admin 可以查看任意账户交易。\n5. admin 删除账户必须真的生效。\n6. 所有 predefined unit tests 通过。",
+        "样例输入": "POST /api/core-banking/auth/signin\n{\n\"emailAddress\": \"string\",\n\"password\": \"string\"\n}\n\nGET /api/core-banking/transaction/transactionHistory?fromDate=2024-01-01&toDate=2024-01-31\nAuthorization: Bearer YOUR_JWT_TOKEN",
+        "样例输出": "登录成功 200：\n{\n\"name\": \"Bearer\",\n\"value\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n\n未认证 401：\n{ \"error\": \"Authentication required\" }\n\n普通用户访问 admin-only endpoint 403：\n{ \"error\": \"Admin access required\" }\n\n日期格式错误 400：\n{ \"error\": \"Invalid date format\" }",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可见相关文件和问题数：\nWebSecurityConfig.java: 7 problems\nAccountService.java: 3 problems\nTransactionService.java: 6 problems\nCorsConfig.java: 1 problem\nProblems panel: 61\n\n可能测试点：\n1. JWT role mapping。\n2. 普通用户 transactionHistory 过滤。\n3. accountId endpoint 仅 admin。\n4. admin delete 真的删除或按测试要求 deactive。\n5. 401/403/400 message 精确匹配。\n6. 不要修无关问题。",
+        "时间限制": "帖子经验显示约 60 分钟。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-26",
+      "category": "ai-coding-debug",
+      "title": "Workflow React Django Issue and Sub-Issue Creation Debug",
+      "tags": [
+        "React",
+        "Django",
+        "Issue Tracking",
+        "Sub-Issue",
+        "API Contract",
+        "Backend Debug",
+        "Unit Tests"
+      ],
+      "fields": {
+        "题目标题": "Workflow React Django Issue and Sub-Issue Creation Debug",
+        "题干描述": "Workflow 是团队工作管理平台。当前 users 创建 new issue 或 sub-issue 后，它们没有真正创建，或不会出现在 board / issue list 中。任务是修复 backend 创建逻辑、identifier 生成、自增规则、parent-child 关系和 activity tracking。",
+        "输入格式": "输入是 React + Django repo、README、登录账号、POST /api/issues API 和 tests。\n\n测试账号：\nEmail: alex@workflow.dev\nPassword: Password@123\n\nAPI：\nPOST /api/issues\nAuth: Required, Bearer token\n\nRequest body：\n{\n\"title\": \"Implement user authentication\",\n\"description\": \"Add JWT-based authentication system\",\n\"teamId\": \"team_id\",\n\"status\": \"todo\",\n\"priority\": \"high\",\n\"assignee\": \"user_id\",\n\"parentIssue\": \"parent_issue_id\",\n\"labels\": [\"backend\", \"security\"]\n}",
+        "输出格式": "期望输出：\n1. issue 创建成功后立即出现在 team board。\n2. identifier 格式为 TEAM_KEY-NUMBER，如 ENG-1、ENG-2、DES-1。\n3. 编号按 team 独立自增。\n4. sub-issue 正确保存 parentIssue。\n5. issue creation 自动创建 activity record。\n6. 错误响应与 README 一致。",
+        "样例输入": "POST /api/issues\n{\n\"title\": \"Implement user authentication\",\n\"description\": \"Add JWT-based authentication system\",\n\"teamId\": \"team_id\",\n\"status\": \"todo\",\n\"priority\": \"high\",\n\"assignee\": \"user_id\",\n\"parentIssue\": null,\n\"labels\": [\"backend\", \"security\"]\n}",
+        "样例输出": "201 Created\n{\n\"issue\": {\n\"_id\": \"issue_id\",\n\"identifier\": \"ENG-1\",\n\"title\": \"Implement user authentication\",\n\"status\": \"todo\",\n\"priority\": \"high\",\n\"team\": { \"_id\": \"team_id\", \"name\": \"Engineering\", \"key\": \"ENG\" },\n\"parentIssue\": null,\n\"labels\": [\"backend\", \"security\"]\n}\n}\n\nMissing title 400：\n{ \"message\": \"Title is required\" }\n\nTeam not found 404：\n{ \"message\": \"Team not found\" }",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. title 缺失返回 400 和精确 message。\n2. teamId 无效返回 404 和精确 message。\n3. issue 被真实写入数据库。\n4. board/list API 能查到新 issue。\n5. sub-issue parentIssue 正确。\n6. identifier 按 team 独立递增。\n7. activity record 被创建。",
+        "时间限制": "AI Coding 题通常为 60 分钟，截图未提供精确时限。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    },
+    {
+      "sourceId": "ai-27",
+      "category": "ai-coding-debug",
+      "title": "Movie Review Moderation and Rate Limiting Debug",
+      "tags": [
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Middleware",
+        "Rate Limiting",
+        "Moderation",
+        "Cross Endpoint State",
+        "Test Driven Debugging"
+      ],
+      "fields": {
+        "题目标题": "Movie Review Moderation and Rate Limiting Debug",
+        "题干描述": "Movie review 平台允许用户 create 和 update reviews。后端大概率是 Node.js + Express + MongoDB。任务不是从零写功能，而是修复分散在 controllers、middleware、utilities、models 中的 bug，让所有 tests 通过。\n\n核心点是 review moderation、用户违规 flag、POST/PUT 共享 rate limit，以及错误响应。",
+        "输入格式": "输入是 repo、README、review create/update API、测试输出。\n\n可能 API：\nPOST /reviews\nPUT /reviews/{reviewId}\n\n核心输入：\nreview content\ncurrent user\nreview operation type\nrequest timestamp\nuser violation history",
+        "输出格式": "期望输出：\n1. 创建 review 时连续违规 3 次永久 flag 用户。\n2. 更新 review 时连续违规 3 次永久 flag 用户。\n3. create 和 update 累计违规 3 次也 flag。\n4. 1 分钟内超过 4 次 review 操作触发 rate limit。\n5. rate limit 在 POST 和 PUT 之间共享。\n6. inappropriate content 创建或更新都返回 400。\n7. tests 全部通过。",
+        "样例输入": "POST /reviews with inappropriate content\nPUT /reviews/{reviewId} with inappropriate content\n4+ review operations inside 1 minute",
+        "样例输出": "Inappropriate content -> 400\n3 violations -> user permanently flagged\nMore than 4 review operations in 1 minute -> rate limit response",
+        "隐藏测试 input/output": "官方隐藏测试 input/output 未公开。下面只整理可能覆盖的隐藏测试方向，不伪造官方答案。\n可能测试点：\n1. create 违规和 update 违规分别累计。\n2. create + update 跨 endpoint 累计违规。\n3. 连续违规和累计违规的区别。\n4. rate limit 共享状态，不按 endpoint 分开计数。\n5. middleware 顺序：rate limit、moderation、DB save、response。\n6. 用户被 flag 后后续请求处理。",
+        "时间限制": "AI Coding 题通常为 60 分钟，正式时限未提供。",
+        "内存限制": "不适用，正式内存限制未提供。"
+      }
+    }
+  ]
+}

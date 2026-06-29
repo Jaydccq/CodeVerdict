@@ -44,6 +44,9 @@
     "test:e2e": "jest --config jest-e2e.config.ts --runInBand --forceExit",
     "validate:problems": "node scripts/validate-problems.mjs",
     "import:problem": "node scripts/import-problem.mjs",
+    "extract:amazon-oa": "node scripts/extract-amazon-oa-html.mjs",
+    "generate:amazon-oa": "node scripts/generate-amazon-oa-problems.mjs && node scripts/migrate-amazon-ai-debug-workspaces.mjs",
+    "migrate:amazon-ai-debug": "node scripts/migrate-amazon-ai-debug-workspaces.mjs",
     "smoke:practice": "node scripts/smoke-practice.mjs",
     "mock:judge0:practice": "node scripts/mock-judge0-practice.mjs"
   },

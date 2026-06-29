@@ -1,0 +1,38 @@
+slug: amazon-drone-circular-hub-travel
+source: amazon-oa
+title: Drone Delivery Circular Hub Minimum Travel Time
+difficulty: medium
+description: |
+  A drone starts at hub 1 on a circular route. Moving along edge i costs transitionTime[i]. Visit the requested hubs in order and minimize total travel time by choosing the shorter direction on each segment.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: m. Line 2: m edge costs. Line 3: requested hubs in visit order.
+outputFormat: |
+  Print the minimum total travel time.
+constraints: |
+  2 <= m <= 200000. Costs are positive. Hub IDs are 1-based.
+samples:
+  - input: |
+      3
+      3 2 1
+      1 3 3 2
+    output: |
+      3
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      5
+      4 1 7 3 2
+      5 2 4
+    output: |
+      16
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

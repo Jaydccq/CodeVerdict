@@ -1,0 +1,37 @@
+slug: amazon-debug-django-api-tests
+source: amazon-oa
+questionType: debug-workspace
+title: Backend API Test Suite Repository Debug
+difficulty: medium
+description: |
+  You are given a small API-handler repository modeled after a backend API test suite.
+  Several route-level tests fail because the handlers do not follow the README contract.
+  
+  Known issues reported by the test suite:
+  
+  - create accepts blank titles
+  - missing records return the wrong status code
+  - status updates do not persist
+  
+  Fix the repository behavior so the API-style tests pass.
+inputFormat: |
+  This problem does not use stdin/stdout input.
+  Open the seeded repository workspace, read the README, inspect the allowed source files, and run the visible test suite from the practice workspace.
+outputFormat: |
+  There is no single textual output.
+  Success is determined by the visible and hidden repository tests.
+constraints: |
+  - Only files declared editable by the workspace manifest may be modified.
+  - The runtime environment is Node.js.
+  - The seeded repository and tests are deterministic.
+samples:
+  - input: |
+      Open README.md and the source files listed in the workspace editor.
+    output: |
+      After fixing the bugs, all visible tests should report PASS.
+    explanation: |
+      This workspace problem is graded by repository tests rather than stdin and stdout.
+supportedLanguages:
+  - javascript
+timeLimitMs: 2000
+memoryLimitKb: 262144

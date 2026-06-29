@@ -1,0 +1,37 @@
+slug: amazon-debug-banking-rbac
+source: amazon-oa
+questionType: debug-workspace
+title: Banking RBAC Repository Debug
+difficulty: medium
+description: |
+  You are given a small banking access-control repository with multiple failing tests.
+  The README defines how role-based permissions should be evaluated.
+  
+  Known issues reported by the test suite:
+  
+  - administrator wildcard permissions are not honored
+  - missing roles are allowed by default
+  - permission checks use substring matching instead of exact permission names
+  
+  Fix the repository so access decisions match the README and all predefined tests pass.
+inputFormat: |
+  This problem does not use stdin/stdout input.
+  Open the seeded repository workspace, read the README, inspect the allowed source files, and run the visible test suite from the practice workspace.
+outputFormat: |
+  There is no single textual output.
+  Success is determined by the visible and hidden repository tests.
+constraints: |
+  - Only files declared editable by the workspace manifest may be modified.
+  - The runtime environment is Node.js.
+  - The seeded repository and tests are deterministic.
+samples:
+  - input: |
+      Open README.md and the source files listed in the workspace editor.
+    output: |
+      After fixing the bugs, all visible tests should report PASS.
+    explanation: |
+      This workspace problem is graded by repository tests rather than stdin and stdout.
+supportedLanguages:
+  - javascript
+timeLimitMs: 2000
+memoryLimitKb: 262144

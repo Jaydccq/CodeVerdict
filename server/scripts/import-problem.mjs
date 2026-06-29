@@ -8,6 +8,12 @@ const starterFileMap = {
   java: 'java.java',
 };
 
+function hasUnresolvedPlaceholder(value) {
+  return ['未提供', '未公开', '不伪造官方答案'].some((placeholder) =>
+    String(value).includes(placeholder),
+  );
+}
+
 function usage() {
   console.error(
     'Usage: npm --prefix server run import:problem -- --input /absolute/or/relative/problem.json',
@@ -30,6 +36,7 @@ function blockField(key, value, depth = 0) {
 function writeYaml(problem) {
   const lines = [
     `slug: ${problem.slug}`,
+    ...(problem.source ? [`source: ${problem.source}`] : []),
     `title: ${problem.title}`,
     `difficulty: ${problem.difficulty}`,
     blockField('description', problem.description),
@@ -101,11 +108,39 @@ function main() {
     }
   }
 
+  if (problem.source === 'amazon-oa') {
+    if (typeof problem.editorial !== 'string' || problem.editorial.trim() === '') {
+      throw new Error('Amazon OA imports require a non-empty editorial field');
+    }
+
+    const judgeFacingFields = [
+      problem.title,
+      problem.description,
+      problem.inputFormat,
+      problem.outputFormat,
+      problem.constraints,
+      problem.editorial,
+      ...problem.samples.flatMap((sample) => [
+        sample.input,
+        sample.output,
+        sample.explanation ?? '',
+      ]),
+    ];
+
+    if (judgeFacingFields.some(hasUnresolvedPlaceholder)) {
+      throw new Error('Amazon OA import contains unresolved source placeholders');
+    }
+  }
+
   const problemsDir = path.resolve(process.cwd(), '..', 'problems');
   const targetDir = path.join(problemsDir, problem.slug);
   fs.mkdirSync(path.join(targetDir, 'starter-code'), { recursive: true });
 
   fs.writeFileSync(path.join(targetDir, 'problem.yaml'), writeYaml(problem));
+
+  if (problem.editorial !== undefined) {
+    fs.writeFileSync(path.join(targetDir, 'editorial.md'), `${problem.editorial}`);
+  }
 
   for (const language of problem.supportedLanguages) {
     const starterFile = starterFileMap[language];

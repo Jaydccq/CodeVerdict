@@ -1,0 +1,49 @@
+slug: amazon-debug-scheduled-payments
+source: amazon-oa
+questionType: debug-workspace
+title: Payment Scheduling Repository Debug
+difficulty: medium
+description: |
+  You are given a small payment scheduling repository with several failing
+  predefined tests. The README defines the expected behavior for creating
+  scheduled payments and executing due payments.
+
+  Known issues reported by the test suite:
+
+  - payment amount validation mishandles boundary values
+  - scheduling exactly at the current timestamp is handled incorrectly
+  - due-payment execution misses boundary cases
+  - processed payment state is not updated consistently
+
+  Your task is to inspect the repository, use the failing tests to locate the
+  bugs, and fix the allowed source files. The final behavior must match the
+  README, handle boundary conditions correctly, and pass all predefined tests.
+
+  This repository version is a normalized Amazon OA debug-workspace problem.
+  The visible and hidden test suites are repository-authored practice tests, not
+  official Amazon tests.
+inputFormat: |
+  This problem does not use stdin/stdout input.
+  Open the seeded repository workspace, read the README, inspect the allowed
+  source files, and run the visible test suite from the practice workspace.
+outputFormat: |
+  There is no single textual output.
+  Success is determined by the visible and hidden repository tests.
+constraints: |
+  - Only files declared editable by the workspace manifest may be modified.
+  - The runtime environment is Node.js.
+  - The seeded repository and tests are deterministic.
+samples:
+  - input: |
+      Open README.md and the payment scheduler source files listed in the
+      workspace editor.
+    output: |
+      After fixing the bugs, all visible tests should report PASS.
+    explanation: |
+      This workspace problem is graded by repository tests rather than stdin and
+      stdout. Use the visible tests to verify amount validation, current-time
+      scheduling, due-payment execution, and status updates.
+supportedLanguages:
+  - javascript
+timeLimitMs: 2000
+memoryLimitKb: 262144

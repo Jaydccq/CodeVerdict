@@ -1,0 +1,74 @@
+{
+  "slug": "leetcode-maximum-alternating-subsequence-sum",
+  "source": "leetcode",
+  "title": "Maximum Alternating Subsequence Sum",
+  "difficulty": "medium",
+  "description": "Given an array of positive integers, choose a subsequence and evaluate its alternating sum: the first chosen value is added, the second is subtracted, the third is added, and so on. Return the maximum possible alternating sum over all subsequences.\n\nThis repository version is an authored practice statement aligned with the LeetCode 1911 problem idea.",
+  "inputFormat": "Line 1: integer n.\nLine 2: n space-separated positive integers.",
+  "outputFormat": "Print one integer: the maximum alternating subsequence sum.",
+  "constraints": "1 <= n <= 100000.\n1 <= nums[i] <= 100000.",
+  "samples": [
+    {
+      "input": "4\n4 2 5 3\n",
+      "output": "7\n",
+      "explanation": "Choose the subsequence [4, 2, 5]. Its alternating sum is 4 - 2 + 5 = 7."
+    },
+    {
+      "input": "4\n5 6 7 8\n",
+      "output": "8\n",
+      "explanation": "The best choice is [8], which yields 8."
+    },
+    {
+      "input": "5\n6 2 1 2 4\n",
+      "output": "9\n",
+      "explanation": "One optimal subsequence is [6, 1, 4], giving 6 - 1 + 4 = 9."
+    }
+  ],
+  "supportedLanguages": [
+    "python",
+    "javascript",
+    "cpp",
+    "java"
+  ],
+  "timeLimitMs": 2000,
+  "memoryLimitKb": 262144,
+  "editorial": "# Maximum Alternating Subsequence Sum\n\nTrack two best states while scanning the array.\n\n- `plus` = best alternating sum where the next chosen number would be subtracted.\n- `minus` = best alternating sum where the next chosen number would be added.\n\nFor each value `x`:\n\n- `nextPlus = max(plus, minus + x)`\n- `nextMinus = max(minus, plus - x)`\n\nInitialize `plus = 0` and `minus = 0`. After processing every value, the answer is `plus`.\n\nBecause all transitions use only the previous pair of states, the solution runs in `O(n)` time and `O(1)` extra space.",
+  "starterCode": {
+    "python": "import sys\n\n# Read from standard input and write the answer to standard output.\ndef solve(data: str) -> str:\n    return \"\"\n\nif __name__ == \"__main__\":\n    print(solve(sys.stdin.read()))\n",
+    "javascript": "const fs = require('fs');\n\nfunction solve(input) {\n  return '';\n}\n\nprocess.stdout.write(String(solve(fs.readFileSync(0, 'utf8'))));\n",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    return 0;\n}\n",
+    "java": "import java.io.*;\nimport java.util.*;\n\nclass Main {\n    public static void main(String[] args) throws Exception {\n        new BufferedReader(new InputStreamReader(System.in));\n    }\n}\n"
+  },
+  "visibleTests": [
+    {
+      "input": "4\n4 2 5 3\n",
+      "output": "7\n"
+    },
+    {
+      "input": "4\n5 6 7 8\n",
+      "output": "8\n"
+    },
+    {
+      "input": "5\n6 2 1 2 4\n",
+      "output": "9\n"
+    }
+  ],
+  "hiddenTests": [
+    {
+      "input": "1\n7\n",
+      "output": "7\n"
+    },
+    {
+      "input": "6\n1 3 2 5 4 7\n",
+      "output": "9\n"
+    },
+    {
+      "input": "7\n10 1 10 1 10 1 10\n",
+      "output": "37\n"
+    },
+    {
+      "input": "5\n100000 1 100000 1 100000\n",
+      "output": "299998\n"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "stack": "node",
+  "runnerProfile": "node-script",
+  "entryFiles": [
+    "README.md",
+    "src/services/reviewModerationService.js",
+    "src/repositories/reviewRepository.js",
+    "tests/run-visible.js"
+  ],
+  "editablePaths": [
+    "src/services/reviewModerationService.js",
+    "src/repositories/reviewRepository.js"
+  ],
+  "visibleTestScript": "tests/run-visible.js",
+  "submitTestScript": "tests/run-hidden.js"
+}

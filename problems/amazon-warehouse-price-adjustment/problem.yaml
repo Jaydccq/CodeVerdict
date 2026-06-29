@@ -1,0 +1,36 @@
+slug: amazon-warehouse-price-adjustment
+source: amazon-oa
+title: Amazon Warehouse Price Adjustment Minimum Operations
+difficulty: medium
+description: |
+  Each operation changes one product price by 1. Find the minimum operations needed to make all prices equal.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: n. Line 2: n prices.
+outputFormat: |
+  Print the minimum operation count.
+constraints: |
+  1 <= n <= 200000.
+samples:
+  - input: |
+      5
+      1 2 3 10 12
+    output: |
+      19
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      4
+      7 7 7 7
+    output: |
+      0
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

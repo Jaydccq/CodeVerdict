@@ -1,0 +1,38 @@
+slug: amazon-maximum-total-dataflow
+source: amazon-oa
+title: Maximum Total DataFlow from Unique Node Pairs
+difficulty: medium
+description: |
+  Choose k unique pairs, one node from each of two groups. A pair dataflow is the sum of both node capacities. Maximize total dataflow.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: n k. Line 2: group A capacities. Line 3: group B capacities.
+outputFormat: |
+  Print the maximum total dataflow of k pairs.
+constraints: |
+  1 <= n <= 2000. 1 <= k <= n*n.
+samples:
+  - input: |
+      3 2
+      5 1 4
+      3 7 2
+    output: |
+      23
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      2 3
+      10 1
+      2 9
+    output: |
+      41
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

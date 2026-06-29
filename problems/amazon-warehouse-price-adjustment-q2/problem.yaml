@@ -1,0 +1,36 @@
+slug: amazon-warehouse-price-adjustment-q2
+source: amazon-oa
+title: Second OA Q2 Warehouse Price Adjustment
+difficulty: medium
+description: |
+  This practice variant uses the same warehouse price operation: changing one price by 1 costs one operation. Minimize total operations to equalize all prices.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: n. Line 2: prices.
+outputFormat: |
+  Print the minimum operations.
+constraints: |
+  1 <= n <= 200000.
+samples:
+  - input: |
+      3
+      2 9 4
+    output: |
+      7
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      6
+      1 1 2 2 3 3
+    output: |
+      4
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

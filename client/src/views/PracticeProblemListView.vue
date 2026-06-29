@@ -35,7 +35,7 @@ onMounted(() => {
         <div
           class="rounded-full border border-black/10 bg-white/80 px-4 py-2 text-sm text-slate-500 shadow-sm"
         >
-          stdin / stdout · local judge
+          repo workspace + stdin / stdout · local practice
         </div>
       </div>
 
@@ -51,13 +51,15 @@ onMounted(() => {
           <h2
             class="mt-4 max-w-2xl text-4xl font-semibold leading-tight text-slate-950"
           >
-            A stripped-down LeetCode-style workspace for your own OA problem
-            set.
+            A focused practice workspace for algorithm and repo-debug OA
+            problems.
           </h2>
           <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            Problems come from repository files. You can switch languages, run
-            visible tests, try custom stdin, and submit against hidden tests
-            without the exam and admin layers getting in the way.
+            Problems come from repository files. You can switch languages for
+            algorithm questions, open seeded files for debug workspaces, run
+            visible checks, try custom stdin where applicable, and submit
+            against hidden tests without the exam and admin layers getting in
+            the way.
           </p>
         </div>
 
@@ -68,10 +70,24 @@ onMounted(() => {
             current catalog
           </p>
           <p class="mt-3 text-4xl font-semibold">
-            {{ practiceStore.problems.length }}
+            {{ practiceStore.loadingProblems ? '...' : practiceStore.problems.length }}
           </p>
           <p class="mt-2 text-sm text-slate-400">validated local problems</p>
         </div>
+      </div>
+
+      <div
+        v-if="practiceStore.error"
+        class="mb-6 rounded-2xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm font-semibold text-rose-700"
+      >
+        {{ practiceStore.error }}
+      </div>
+
+      <div
+        v-if="!practiceStore.loadingProblems && practiceStore.problems.length === 0"
+        class="rounded-[28px] border border-dashed border-black/10 bg-white/80 p-8 text-center text-slate-500"
+      >
+        没有加载到题目。请确认后端 `/api/problems` 可用，或检查 Vite API 代理配置。
       </div>
 
       <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

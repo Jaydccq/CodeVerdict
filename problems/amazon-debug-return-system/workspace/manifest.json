@@ -1,0 +1,16 @@
+{
+  "stack": "node",
+  "runnerProfile": "node-script",
+  "entryFiles": [
+    "src/services/loanService.js",
+    "src/services/accountService.js",
+    "src/repositories/loanRepository.js"
+  ],
+  "editablePaths": [
+    "src/services/loanService.js",
+    "src/services/accountService.js",
+    "src/repositories/loanRepository.js"
+  ],
+  "visibleTestScript": "tests/run-visible.js",
+  "submitTestScript": "tests/run-hidden.js"
+}

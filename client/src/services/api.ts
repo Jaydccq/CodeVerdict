@@ -3,6 +3,7 @@ import { useAuthStore } from '../stores/auth';
 import { useToastStore } from '../stores/toast';
 import type {
   McqSubmitResult,
+  PracticeDebugWorkspaceDraft,
   PracticeProblem,
   PracticeProblemListItem,
   PracticeRunCustomResult,
@@ -119,6 +120,38 @@ export async function getPracticeProblem(
   return data;
 }
 
+export async function updatePracticeEditorial(payload: {
+  slug: string;
+  editorial: string;
+}): Promise<PracticeProblem> {
+  const { slug, editorial } = payload;
+  const { data } = await api.put<PracticeProblem>(`/problems/${slug}/editorial`, {
+    editorial,
+  });
+  return data;
+}
+
+export async function getPracticeDebugDraft(
+  slug: string,
+): Promise<PracticeDebugWorkspaceDraft> {
+  const { data } = await api.get<PracticeDebugWorkspaceDraft>(
+    `/problems/${slug}/debug-draft`,
+  );
+  return data;
+}
+
+export async function updatePracticeDebugDraft(payload: {
+  slug: string;
+  editedFiles: Record<string, string>;
+}): Promise<PracticeDebugWorkspaceDraft> {
+  const { slug, ...body } = payload;
+  const { data } = await api.put<PracticeDebugWorkspaceDraft>(
+    `/problems/${slug}/debug-draft`,
+    body,
+  );
+  return data;
+}
+
 export async function runPracticeSample(payload: {
   slug: string;
   sourceCode: string;
@@ -127,6 +160,18 @@ export async function runPracticeSample(payload: {
   const { slug, ...body } = payload;
   const { data } = await api.post<PracticeRunSampleResult>(
     `/problems/${slug}/run-sample`,
+    body,
+  );
+  return data;
+}
+
+export async function runPracticeDebugVisible(payload: {
+  slug: string;
+  editedFiles: Record<string, string>;
+}): Promise<PracticeRunSampleResult> {
+  const { slug, ...body } = payload;
+  const { data } = await api.post<PracticeRunSampleResult>(
+    `/problems/${slug}/debug-run`,
     body,
   );
   return data;
@@ -154,6 +199,18 @@ export async function submitPractice(payload: {
   const { slug, ...body } = payload;
   const { data } = await api.post<PracticeSubmitResult>(
     `/problems/${slug}/submit`,
+    body,
+  );
+  return data;
+}
+
+export async function submitPracticeDebug(payload: {
+  slug: string;
+  editedFiles: Record<string, string>;
+}): Promise<PracticeSubmitResult> {
+  const { slug, ...body } = payload;
+  const { data } = await api.post<PracticeSubmitResult>(
+    `/problems/${slug}/debug-submit`,
     body,
   );
   return data;

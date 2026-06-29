@@ -1,0 +1,51 @@
+slug: leetcode-maximum-alternating-subsequence-sum
+source: leetcode
+title: Maximum Alternating Subsequence Sum
+difficulty: medium
+description: |
+  Given an array of positive integers, choose a subsequence and evaluate its alternating sum: the first chosen value is added, the second is subtracted, the third is added, and so on. Return the maximum possible alternating sum over all subsequences.
+  
+  This repository version is an authored practice statement aligned with the LeetCode 1911 problem idea.
+inputFormat: |
+  Line 1: integer n.
+  Line 2: n space-separated positive integers.
+outputFormat: |
+  Print one integer: the maximum alternating subsequence sum.
+constraints: |
+  1 <= n <= 100000.
+  1 <= nums[i] <= 100000.
+samples:
+  - input: |
+      4
+      4 2 5 3
+      
+    output: |
+      7
+      
+    explanation: |
+      Choose the subsequence [4, 2, 5]. Its alternating sum is 4 - 2 + 5 = 7.
+  - input: |
+      4
+      5 6 7 8
+      
+    output: |
+      8
+      
+    explanation: |
+      The best choice is [8], which yields 8.
+  - input: |
+      5
+      6 2 1 2 4
+      
+    output: |
+      9
+      
+    explanation: |
+      One optimal subsequence is [6, 1, 4], giving 6 - 1 + 4 = 9.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

@@ -5,6 +5,9 @@ import { usePracticeStore } from '../../stores/practice';
 const practiceStore = usePracticeStore();
 
 const history = computed(() => practiceStore.submissions);
+const isDebugWorkspace = computed(
+  () => practiceStore.currentProblem?.questionType === 'debug-workspace',
+);
 
 function verdictLabel(verdict: string): string {
   return verdict
@@ -47,7 +50,7 @@ function verdictLabel(verdict: string): string {
       <span
         class="font-mono text-[11px] uppercase tracking-[0.24em] text-slate-400"
       >
-        local practice
+        {{ isDebugWorkspace ? 'debug workspace' : 'local practice' }}
       </span>
     </div>
 
@@ -56,7 +59,10 @@ function verdictLabel(verdict: string): string {
       class="grid min-h-0 flex-1 gap-4 overflow-y-auto p-4 lg:grid-cols-[320px_minmax(0,1fr)]"
     >
       <div class="space-y-4">
-        <div class="rounded-2xl border border-black/10 bg-slate-50 p-4">
+        <div
+          v-if="!isDebugWorkspace"
+          class="rounded-2xl border border-black/10 bg-slate-50 p-4"
+        >
           <div class="mb-2 flex items-center justify-between">
             <h3 class="text-sm font-semibold text-slate-900">自定义输入</h3>
             <button
@@ -117,7 +123,9 @@ function verdictLabel(verdict: string): string {
             v-if="practiceStore.lastSubmission.visibleFailure"
             class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950"
           >
-            <p class="font-semibold">样例测试失败</p>
+            <p class="font-semibold">
+              {{ isDebugWorkspace ? '可见测试失败' : '样例测试失败' }}
+            </p>
             <pre
               class="mt-2 whitespace-pre-wrap rounded-xl bg-white p-3 font-mono text-xs"
             >
@@ -172,7 +180,11 @@ function verdictLabel(verdict: string): string {
           >
             <div class="flex items-center justify-between gap-4">
               <h3 class="text-sm font-semibold text-slate-900">
-                样例测试 {{ result.index + 1 }}
+                {{
+                  isDebugWorkspace
+                    ? `可见测试 ${result.index + 1}: ${result.input}`
+                    : `样例测试 ${result.index + 1}`
+                }}
               </h3>
               <span
                 class="rounded-full px-3 py-1 text-xs font-semibold"
@@ -188,13 +200,13 @@ function verdictLabel(verdict: string): string {
             <pre
               class="mt-3 whitespace-pre-wrap rounded-2xl bg-white p-3 font-mono text-xs text-slate-700"
             >
-输入:
+{{ isDebugWorkspace ? '测试:' : '输入:' }}
 {{ result.input }}
 
-期望输出:
+{{ isDebugWorkspace ? '期望状态:' : '期望输出:' }}
 {{ result.expectedOutput }}
 
-实际输出:
+{{ isDebugWorkspace ? '实际状态:' : '实际输出:' }}
 {{ result.actualOutput ?? '' }}</pre
             >
             <p
@@ -214,7 +226,11 @@ function verdictLabel(verdict: string): string {
           "
           class="flex h-full min-h-48 items-center justify-center rounded-2xl border border-dashed border-black/10 bg-slate-50 text-sm text-slate-500"
         >
-          运行样例、自定义输入，或者提交代码后，会在这里看到结果。
+          {{
+            isDebugWorkspace
+              ? '运行可见测试或者提交工作区后，会在这里看到结果。'
+              : '运行样例、自定义输入，或者提交代码后，会在这里看到结果。'
+          }}
         </div>
       </div>
     </div>

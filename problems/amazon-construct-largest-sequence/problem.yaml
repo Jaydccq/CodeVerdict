@@ -1,0 +1,40 @@
+slug: amazon-construct-largest-sequence
+source: amazon-oa
+title: Construct Lexicographically Largest Sequence
+difficulty: medium
+description: |
+  Build a sequence of m values. At each step choose one currently unlocked unused index. After the choice, every locked index immediately to the right of an unlocked index becomes unlocked. Maximize the produced sequence lexicographically.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: n. Line 2: values. Line 3: binary state string. Line 4: m.
+outputFormat: |
+  Print the selected values in order.
+constraints: |
+  1 <= n <= 200000. At least m values become selectable.
+samples:
+  - input: |
+      4
+      10 5 7 6
+      0101
+      2
+    output: |
+      6 7
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      5
+      4 9 1 8 7
+      10010
+      3
+    output: |
+      8 9 7
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

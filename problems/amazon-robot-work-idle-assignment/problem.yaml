@@ -1,0 +1,36 @@
+slug: amazon-robot-work-idle-assignment
+source: amazon-oa
+title: Robot Work or Idle State Assignment
+difficulty: medium
+description: |
+  A robot can work on selected time slots, but two adjacent slots cannot both be work slots. Maximize total work value.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: n. Line 2: n work values.
+outputFormat: |
+  Print the maximum achievable work value.
+constraints: |
+  1 <= n <= 200000.
+samples:
+  - input: |
+      5
+      2 7 9 3 1
+    output: |
+      12
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      4
+      5 1 1 5
+    output: |
+      10
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144

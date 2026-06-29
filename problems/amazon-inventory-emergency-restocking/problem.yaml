@@ -1,0 +1,36 @@
+slug: amazon-inventory-emergency-restocking
+source: amazon-oa
+title: Warehouse Inventory Emergency Restocking
+difficulty: medium
+description: |
+  Inventory changes over days. Whenever stock falls below a threshold after a daily change, emergency restocks add a fixed amount until the threshold is met. Count restocks.
+  
+  This is a repository-authored Amazon OA practice adaptation. The fixtures are deterministic practice tests, not official hidden tests.
+inputFormat: |
+  Line 1: n start threshold restockAmount. Line 2: n daily changes.
+outputFormat: |
+  Print the number of emergency restocks.
+constraints: |
+  1 <= n <= 200000. restockAmount > 0.
+samples:
+  - input: |
+      4 10 5 6
+      -3 -4 -5 2
+    output: |
+      2
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+  - input: |
+      3 2 4 3
+      1 -5 -1
+    output: |
+      3
+    explanation: |
+      The output is produced by applying the rule described in the statement to the input instance.
+supportedLanguages:
+  - python
+  - javascript
+  - cpp
+  - java
+timeLimitMs: 2000
+memoryLimitKb: 262144
